@@ -1,59 +1,54 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-// using Auto_Insurance_Management_System.Models; // Often not directly needed in DashboardController if only rendering UI
+using Auto_Insurance_Management_System.Models;
+using Auto_Insurance_Management_System.Services;
+using System.Security.Claims;
 
 namespace Auto_Insurance_Management_System.Controllers
 {
-    [Authorize] // Ensures only authenticated users can access any action in this controller
+    [Authorize]
     public class DashboardController : Controller
     {
-        // This is the default entry point if someone just navigates to /Dashboard or /Dashboard/Index
-        public IActionResult Index()
+        private readonly IAuthService _authService;
+
+        public DashboardController(IAuthService authService)
         {
-            // Determine current user's role
-            string userRole = "CUSTOMER"; // Default to CUSTOMER
-
-            if (User.IsInRole("ADMIN"))
-            {
-                userRole = "ADMIN";
-            }
-            else if (User.IsInRole("AGENT"))
-            {
-                userRole = "AGENT";
-            }
-            // If none of the above, it remains CUSTOMER (as per the default or if a user has no specific role).
-
-            ViewBag.UserRole = userRole; // Standardized ViewBag key for the view
-            ViewBag.UserName = User.Identity.Name;
-
-            return View(); // Renders Views/Dashboard/Index.cshtml
+            _authService = authService;
         }
 
-        // Admin-specific dashboard action
-        [Authorize(Roles = "ADMIN")]
-        public IActionResult AdminDashboard()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.UserRole = "ADMIN"; // Explicitly set role for the view
-            ViewBag.UserName = User.Identity.Name;
-            return View("Index"); // Render the shared Views/Dashboard/Index.cshtml
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _authService.GetUserProfileAsync(userId);
+            
+            return View(user);
         }
 
-        // Agent-specific dashboard action
-        [Authorize(Roles = "AGENT")]
-        public IActionResult AgentDashboard()
+        [Authorize(Roles = nameof(UserRole.ADMIN))]
+        public async Task<IActionResult> AdminDashboard()
         {
-            ViewBag.UserRole = "AGENT"; // Explicitly set role for the view
-            ViewBag.UserName = User.Identity.Name;
-            return View("Index"); // Render the shared Views/Dashboard/Index.cshtml
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _authService.GetUserProfileAsync(userId);
+            
+            return View("Index", user);
         }
 
-        // Customer-specific dashboard action
-        [Authorize(Roles = "CUSTOMER")]
-        public IActionResult CustomerDashboard()
+        [Authorize(Roles = nameof(UserRole.AGENT))]
+        public async Task<IActionResult> AgentDashboard()
         {
-            ViewBag.UserRole = "CUSTOMER"; // Explicitly set role for the view
-            ViewBag.UserName = User.Identity.Name;
-            return View("Index"); // Render the shared Views/Dashboard/Index.cshtml
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _authService.GetUserProfileAsync(userId);
+            
+            return View("Index", user);
+        }
+
+        [Authorize(Roles = nameof(UserRole.CUSTOMER))]
+        public async Task<IActionResult> CustomerDashboard()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _authService.GetUserProfileAsync(userId);
+            
+            return View("Index", user);
         }
     }
 }

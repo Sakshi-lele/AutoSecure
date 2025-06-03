@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Auto_Insurance_Management_System.Models.User
+@{
     ViewData["Title"] = "Dashboard";
 }
 
@@ -7,13 +8,13 @@
         <div class="col-12">
             <div class="jumbotron bg-primary text-white p-4 rounded">
                 <h1 class="display-4">Welcome to Auto Insurance Management System!</h1>
-                <p class="lead">Hello, @ViewBag.UserName (@ViewBag.UserRole)</p>
+                <p class="lead">Hello, @Model.FirstName @Model.LastName <span class="badge bg-info">@Model.Role.ToString()</span></p>
             </div>
         </div>
     </div>
 
     <div class="row mt-4">
-        @if (ViewBag.UserRole == "ADMIN")
+        @if (Model.Role == UserRole.ADMIN)
         {
             <div class="col-md-4">
                 <div class="card text-center">
@@ -43,7 +44,7 @@
                 </div>
             </div>
         }
-        else if (ViewBag.UserRole == "AGENT")
+        else if (Model.Role == UserRole.AGENT)
         {
             <div class="col-md-4">
                 <div class="card text-center">
@@ -73,7 +74,7 @@
                 </div>
             </div>
         }
-        else // Customer Role
+        else
         {
             <div class="col-md-4">
                 <div class="card text-center">
