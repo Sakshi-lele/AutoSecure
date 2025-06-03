@@ -1,0 +1,138 @@
+﻿@model Auto_Insurance_Management_System.ViewModels.CreatePolicyViewModel
+@{
+    ViewData["Title"] = "Create Policy";
+    var customers = ViewBag.Customers as List<SelectListItem>;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">Create New Policy</h3>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="row">
+                            <!-- Vehicle Information -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0"><i class="fas fa-car"></i> Vehicle Information</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="VehicleDetails" class="form-label"></label>
+                                            <textarea asp-for="VehicleDetails" class="form-control" rows="3"
+                                                      placeholder="e.g., 2022 Toyota Camry, VIN: 1234567890, License: ABC123"></textarea>
+                                            <span asp-validation-for="VehicleDetails" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Coverage Information -->
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0"><i class="fas fa-shield-alt"></i> Coverage Information</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="CoverageType" class="form-label"></label>
+                                            <select asp-for="CoverageType" class="form-select">
+                                                <option value="">Select coverage type</option>
+                                                <option value="Liability">Liability</option>
+                                                <option value="Comprehensive">Comprehensive</option>
+                                                <option value="Collision">Collision</option>
+                                                <option value="Full Coverage">Full Coverage</option>
+                                                <option value="Minimum Coverage">Minimum Coverage</option>
+                                            </select>
+                                            <span asp-validation-for="CoverageType" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="CoverageAmount" class="form-label"></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input asp-for="CoverageAmount" class="form-control" type="number" step="0.01" />
+                                            </div>
+                                            <span asp-validation-for="CoverageAmount" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="PremiumAmount" class="form-label"></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input asp-for="PremiumAmount" class="form-control" type="number" step="0.01" />
+                                            </div>
+                                            <span asp-validation-for="PremiumAmount" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Policy Period -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Policy Period</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="StartDate" class="form-label"></label>
+                                                    <input asp-for="StartDate" class="form-control" type="date" />
+                                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="EndDate" class="form-label"></label>
+                                                    <input asp-for="EndDate" class="form-control" type="date" />
+                                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Create Policy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-calculate end date when start date changes
+        document.getElementById('StartDate').addEventListener('change', function() {
+            const startDate = new Date(this.value);
+            const endDate = new Date(startDate);
+            endDate.setFullYear(endDate.getFullYear() + 1);
+            document.getElementById('EndDate').value = endDate.toISOString().split('T')[0];
+        });
+    </script>
+}

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Auto_Insurance_Management_System.props" />
+</Project>

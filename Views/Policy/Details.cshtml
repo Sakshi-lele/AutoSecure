@@ -1,0 +1,184 @@
+﻿@model Auto_Insurance_Management_System.ViewModels.PolicyDetailsViewModel
+@{
+    ViewData["Title"] = "Policy Details";
+    var currentUserRole = ViewBag.CurrentUserRole as string;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">Policy Details - @Model.PolicyNumber</h3>
+                    <div class="btn-group">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                        @if (currentUserRole == "ADMIN" || currentUserRole == "AGENT")
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.PolicyId" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Policy Information -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-file-contract"></i> Policy Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4">Policy Number:</dt>
+                                        <dd class="col-sm-8"><strong>@Model.PolicyNumber</strong></dd>
+
+                                        <dt class="col-sm-4">Customer:</dt>
+                                        <dd class="col-sm-8">@Model.UserName</dd>
+
+                                        <dt class="col-sm-4">Status:</dt>
+                                        <dd class="col-sm-8">
+                                            @{
+                                                var statusClass = Model.PolicyStatus switch
+                                                {
+                                                    "ACTIVE" => "success",
+                                                    "EXPIRED" => "danger",
+                                                    "CANCELLED" => "secondary",
+                                                    "INACTIVE" => "warning",
+                                                    _ => "info"
+                                                };
+                                            }
+                                            <span class="badge bg-@statusClass fs-6">@Model.PolicyStatus</span>
+                                            @if (Model.EndDate <= DateTime.Today.AddDays(30) && Model.PolicyStatus == "ACTIVE")
+                                            {
+                                                <br>
+
+                                                <small class="text-warning mt-1"><i class="fas fa-exclamation-triangle"></i> Expires in @((Model.EndDate - DateTime.Today).Days) days</small>
+                                            }
+                                            @if (Model.EndDate < DateTime.Today)
+                                            {
+                                                <br>
+
+                                                <small class="text-danger mt-1"><i class="fas fa-times-circle"></i> Policy Expired</small>
+                                            }
+                                        </dd>
+
+                                        <dt class="col-sm-4">Start Date:</dt>
+                                        <dd class="col-sm-8">@Model.StartDate.ToString("MMMM dd, yyyy")</dd>
+
+                                        <dt class="col-sm-4">End Date:</dt>
+                                        <dd class="col-sm-8">@Model.EndDate.ToString("MMMM dd, yyyy")</dd>
+
+                                        <dt class="col-sm-4">Created Date:</dt>
+                                        <dd class="col-sm-8">@Model.DateCreated.ToString("MMMM dd, yyyy")</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Coverage Information -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-shield-alt"></i> Coverage Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4">Vehicle Details:</dt>
+                                        <dd class="col-sm-8">@Model.VehicleDetails</dd>
+
+                                        <dt class="col-sm-4">Coverage Type:</dt>
+                                        <dd class="col-sm-8">@Model.CoverageType</dd>
+
+                                        <dt class="col-sm-4">Coverage Amount:</dt>
+                                        <dd class="col-sm-8"><strong class="text-success">@Model.CoverageAmount.ToString("C")</strong></dd>
+
+                                        <dt class="col-sm-4">Premium Amount:</dt>
+                                        <dd class="col-sm-8"><strong class="text-primary">@Model.PremiumAmount.ToString("C")</strong></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Claims Section -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Claims History</h5>
+                                    <a asp-controller="Claim" asp-action="Create" asp-route-policyId="@Model.PolicyId" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-plus"></i> File New Claim
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    @if (Model.Claims.Any())
+                                    {
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Claim Number</th>
+                                                        <th>Incident Date</th>
+                                                        <th>Description</th>
+                                                        <th>Amount</th>
+                                                        <th>Status</th>
+                                                        <th>Created</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var claim in Model.Claims)
+                                                    {
+                                                        <tr>
+                                                            <td><strong>@claim.ClaimNumber</strong></td>
+                                                            <td>@claim.IncidentDate.ToString("MM/dd/yyyy")</td>
+                                                            <td>@claim.Description</td>
+                                                            <td>@claim.ClaimAmount.ToString("C")</td>
+                                                            <td>
+                                                                @{
+                                                                    var claimStatusClass = claim.ClaimStatus switch
+                                                                    {
+                                                                        "APPROVED" => "success",
+                                                                        "REJECTED" => "danger",
+                                                                        "PENDING" => "warning",
+                                                                        _ => "info"
+                                                                    };
+                                                                }
+                                                                <span class="badge bg-@claimStatusClass">@claim.ClaimStatus</span>
+                                                            </td>
+                                                            <td>@claim.DateFiled.ToString("MM/dd/yyyy")</td>
+                                                            <td>
+                                                                <a asp-controller="Claim" asp-action="Details" asp-route-id="@claim.ClaimId"
+                                                                   class="btn btn-sm btn-outline-info">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center py-3">
+                                            <i class="fas fa-clipboard fa-2x text-muted mb-2"></i>
+                                            <p class="text-muted">No claims filed for this policy.</p>
+                                            <a asp-controller="Claim" asp-action="Create" asp-route-policyId="@Model.PolicyId" class="btn btn-primary">
+                                                <i class="fas fa-plus"></i> File First Claim
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

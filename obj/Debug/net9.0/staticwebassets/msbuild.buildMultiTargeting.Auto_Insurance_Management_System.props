@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Auto_Insurance_Management_System.props" />
+</Project>

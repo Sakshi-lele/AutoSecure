@@ -1,0 +1,113 @@
+﻿@model Auto_Insurance_Management_System.ViewModels.PolicyDetailsViewModel
+@{
+    ViewData["Title"] = "Delete Policy";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Delete Policy
+                    </h3>
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Warning!</h4>
+                        <p>Are you sure you want to delete this policy? This action cannot be undone.</p>
+                        <hr>
+                        <p class="mb-0">All associated data will be permanently removed from the system.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Policy Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4">Policy Number:</dt>
+                                        <dd class="col-sm-8"><strong>@Model.PolicyNumber</strong></dd>
+
+                                        <dt class="col-sm-4">Customer:</dt>
+                                        <dd class="col-sm-8">@Model.UserName</dd>
+
+                                        <dt class="col-sm-4">Vehicle:</dt>
+                                        <dd class="col-sm-8">@Model.VehicleDetails</dd>
+
+                                        <dt class="col-sm-4">Status:</dt>
+                                        <dd class="col-sm-8">
+                                            @{
+                                                var statusClass = Model.PolicyStatus switch
+                                                {
+                                                    "ACTIVE" => "success",
+                                                    "EXPIRED" => "danger",
+                                                    "CANCELLED" => "secondary",
+                                                    "INACTIVE" => "warning",
+                                                    _ => "info"
+                                                };
+                                            }
+                                            <span class="badge bg-@statusClass">@Model.PolicyStatus</span>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Coverage Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4">Coverage Type:</dt>
+                                        <dd class="col-sm-8">@Model.CoverageType</dd>
+
+                                        <dt class="col-sm-4">Coverage Amount:</dt>
+                                        <dd class="col-sm-8">@Model.CoverageAmount.ToString("C")</dd>
+
+                                        <dt class="col-sm-4">Premium Amount:</dt>
+                                        <dd class="col-sm-8">@Model.PremiumAmount.ToString("C")</dd>
+
+                                        <dt class="col-sm-4">Policy Period:</dt>
+                                        <dd class="col-sm-8">
+                                            @Model.StartDate.ToString("MM/dd/yyyy") - @Model.EndDate.ToString("MM/dd/yyyy")
+                                        </dd>
+
+                                        <dt class="col-sm-4">Claims:</dt>
+                                        <dd class="col-sm-8">
+                                            <span class="badge bg-info">@Model.Claims.Count</span>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a asp-action="Details" asp-route-id="@Model.PolicyId" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                                <form asp-action="Delete" method="post" class="d-inline">
+                                    <input type="hidden" asp-for="PolicyId" />
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure you want to delete this policy? This action cannot be undone.')">
+                                        <i class="fas fa-trash"></i> Delete Policy
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
