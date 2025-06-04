@@ -5,64 +5,50 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Auto_Insurance_Management_System.Models;
-using System.Linq; // Added for .Any() in model state checks
+using System.Linq;
 
 namespace Auto_Insurance_Management_System.Controllers
 {
-    [Authorize] // Ensures only authenticated users can access any action in this controller
+    [Authorize]
     public class PolicyController : Controller
     {
         private readonly IPolicyService _policyService;
         private readonly UserManager<User> _userManager;
+        private readonly IAuthService _authService;
 
-        public PolicyController(IPolicyService policyService, UserManager<User> userManager)
+
+        public PolicyController(IPolicyService policyService, UserManager<User> userManager, IAuthService authService)
         {
             _policyService = policyService;
             _userManager = userManager;
-        }
-
-        // Helper method to set ViewBag.UserRole consistently
-        private void SetUserRoleViewBag()
-        {
-            string currentUserRole = "CUSTOMER"; // Default role
-            if (User.IsInRole("ADMIN"))
-            {
-                currentUserRole = "ADMIN";
-            }
-            else if (User.IsInRole("AGENT"))
-            {
-                currentUserRole = "AGENT";
-            }
-            ViewBag.UserRole = currentUserRole;
+            _authService = authService;
         }
 
         // GET: Policy
         public async Task<IActionResult> Index(string search = "", string status = "")
         {
+               var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _authService.GetUserProfileAsync(userId);
+            
             List<PolicyDetailsViewModel> policies;
 
-            // Determine user's role and fetch policies accordingly
-            if (User.IsInRole("ADMIN"))
+            if (User.IsInRole(nameof(UserRole.ADMIN)))
             {
                 policies = await _policyService.GetAllPoliciesAsync(search, status);
             }
-            else if (User.IsInRole("AGENT"))
+            else if (User.IsInRole(nameof(UserRole.AGENT)))
             {
-                // Agents might only see policies assigned to them, or all policies.
-                // Your current GetAllPoliciesAsync suggests they see all.
                 policies = await _policyService.GetAllPoliciesAsync(search, status);
             }
-            else // Customer role (and any other non-Admin/Agent roles due to [Authorize])
+            else // Customer role
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 policies = await _policyService.GetPoliciesByUserIdAsync(userId, search, status);
             }
 
-            // Pass the current user's role to the view using the standardized ViewBag.UserRole
-            SetUserRoleViewBag(); // <--- Using the helper method
             ViewBag.SearchTerm = search;
             ViewBag.StatusFilter = status;
-            ViewData["Title"] = "Policies"; // Set the title for the page
+            ViewData["Title"] = "Policies";
+            ViewBag.User = user;
 
             return View(policies);
         }
@@ -76,28 +62,22 @@ namespace Auto_Insurance_Management_System.Controllers
                 return NotFound();
             }
 
-            // Check if user can access this policy (Admin, Agent, or owner)
-            var currentUser = await _userManager.GetUserAsync(User); // Get the full User object
+            var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {
-                // This shouldn't happen with [Authorize], but good for robustness
                 return Forbid();
             }
 
-            // Explicitly check roles and policy ownership
-            if (!User.IsInRole("ADMIN") && !User.IsInRole("AGENT") && policy.UserId != currentUser.Id)
+            if (!User.IsInRole(nameof(UserRole.ADMIN)) && !User.IsInRole(nameof(UserRole.AGENT)) && policy.UserId != currentUser.Id)
             {
-                // If not Admin/Agent AND not the owner, forbid access
                 return Forbid();
             }
-
-            SetUserRoleViewBag(); // <--- Using the helper method for consistency
 
             return View(policy);
         }
 
         // GET: Policy/Create
-        [Authorize(Roles = "ADMIN,AGENT,CUSTOMER")]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)},{nameof(UserRole.CUSTOMER)}")]
         public IActionResult Create()
         {
             var model = new CreatePolicyViewModel
@@ -106,26 +86,21 @@ namespace Auto_Insurance_Management_System.Controllers
                 EndDate = DateTime.Today.AddYears(1)
             };
 
-            SetUserRoleViewBag(); // <--- Using the helper method
-
             return View(model);
         }
 
         // POST: Policy/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN,AGENT,CUSTOMER")]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)},{nameof(UserRole.CUSTOMER)}")]
         public async Task<IActionResult> Create(CreatePolicyViewModel model)
         {
-            // Ensure ViewBag.UserRole is set before any return to view
-            SetUserRoleViewBag();
-
             if (ModelState.IsValid)
             {
                 if (model.EndDate <= model.StartDate)
                 {
                     ModelState.AddModelError("EndDate", "End date must be after start date.");
-                    return View(model); // Return to view with error
+                    return View(model);
                 }
 
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -136,19 +111,15 @@ namespace Auto_Insurance_Management_System.Controllers
                     TempData["Success"] = "Policy created successfully!";
                     return RedirectToAction(nameof(Index));
                 }
-                else
-                {
-                    TempData["Error"] = "Failed to create policy. Please try again.";
-                    // Even if service fails, still return the model to the view
-                }
+                
+                TempData["Error"] = "Failed to create policy. Please try again.";
             }
 
-            // If ModelState is not valid or service failed, return the view with the model
             return View(model);
         }
 
         // GET: Policy/Edit/5
-        [Authorize(Roles = "ADMIN,AGENT")]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> Edit(int id)
         {
             var policy = await _policyService.GetPolicyByIdAsync(id);
@@ -156,10 +127,6 @@ namespace Auto_Insurance_Management_System.Controllers
             {
                 return NotFound();
             }
-
-            // Ensure only Admin/Agent can edit policies. No owner-edit for policies?
-            // If customers could edit their own policies, you'd need a similar check as Details action.
-            // Current [Authorize(Roles = "ADMIN,AGENT")] covers this.
 
             var model = new CreatePolicyViewModel
             {
@@ -173,59 +140,45 @@ namespace Auto_Insurance_Management_System.Controllers
                 UserId = policy.UserId
             };
 
-            SetUserRoleViewBag(); // <--- Using the helper method
-
             return View(model);
         }
 
         // POST: Policy/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN,AGENT")]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> Edit(int id, CreatePolicyViewModel model)
         {
-            // Ensure ViewBag.UserRole is set before any return to view
-            SetUserRoleViewBag();
-
             if (ModelState.IsValid)
             {
                 if (model.EndDate <= model.StartDate)
                 {
                     ModelState.AddModelError("EndDate", "End date must be after start date.");
-                    return View(model); // Return to view with error
+                    return View(model);
                 }
 
                 var result = await _policyService.UpdatePolicyAsync(id, model);
                 if (result)
                 {
                     TempData["Success"] = "Policy updated successfully!";
-                    return RedirectToAction(nameof(Details), new { id = id }); // Redirect to details after edit
+                    return RedirectToAction(nameof(Details), new { id = id });
                 }
-                else
-                {
-                    TempData["Error"] = "Failed to update policy. Please try again.";
-                }
+                
+                TempData["Error"] = "Failed to update policy. Please try again.";
             }
 
-            // If ModelState is not valid or service failed, return the view with the model
             return View(model);
         }
 
         // POST: Policy/UpdateStatus
         [HttpPost]
-        [Authorize(Roles = "ADMIN,AGENT")]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
-            // You might want to add ValidateAntiForgeryToken here if this is a form submission
-            // or ensure it's called via AJAX with appropriate anti-forgery tokens.
-            // For simple redirects/API calls, it might be omitted if not directly from a form.
-            // [ValidateAntiForgeryToken] is recommended for POSTs that change state.
-
-            var processedBy = User.Identity.Name; // Get the user's username
+            var processedBy = User.Identity.Name;
             if (string.IsNullOrEmpty(processedBy))
             {
-                // Fallback or error if username not found (e.g., from an API context)
-                processedBy = User.FindFirstValue(ClaimTypes.NameIdentifier); // Use ID as fallback
+                processedBy = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
 
             var result = await _policyService.UpdatePolicyStatusAsync(id, status, processedBy);
@@ -243,7 +196,7 @@ namespace Auto_Insurance_Management_System.Controllers
         }
 
         // GET: Policy/Delete/5
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = nameof(UserRole.ADMIN))]
         public async Task<IActionResult> Delete(int id)
         {
             var policy = await _policyService.GetPolicyByIdAsync(id);
@@ -252,16 +205,14 @@ namespace Auto_Insurance_Management_System.Controllers
                 return NotFound();
             }
 
-            SetUserRoleViewBag(); // <--- Using the helper method
-
             return View(policy);
         }
 
         // POST: Policy/Delete/5
-        [HttpPost, ActionName("Delete")] // ActionName specifies which action to call for this POST
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> DeleteConfirmed(int id) // Renamed for clarity with ActionName
+        [Authorize(Roles = nameof(UserRole.ADMIN))]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var result = await _policyService.DeletePolicyAsync(id);
             if (result)
@@ -277,7 +228,7 @@ namespace Auto_Insurance_Management_System.Controllers
         }
 
         // GET: Policy/CreateClaim/5
-        [Authorize(Roles = "CUSTOMER")]
+        [Authorize(Roles = nameof(UserRole.CUSTOMER))]
         public async Task<IActionResult> CreateClaim(int policyId)
         {
             var policy = await _policyService.GetPolicyByIdAsync(policyId);
@@ -289,7 +240,7 @@ namespace Auto_Insurance_Management_System.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (policy.UserId != userId)
             {
-                return Forbid(); // Ensure only the policy owner can create a claim for it
+                return Forbid();
             }
 
             var model = new CreateClaimViewModel
@@ -300,26 +251,20 @@ namespace Auto_Insurance_Management_System.Controllers
 
             ViewBag.PolicyNumber = policy.PolicyNumber;
 
-            SetUserRoleViewBag(); // <--- Using the helper method
-
             return View(model);
         }
 
         // POST: Policy/CreateClaim
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "CUSTOMER")]
+        [Authorize(Roles = nameof(UserRole.CUSTOMER))]
         public async Task<IActionResult> CreateClaim(CreateClaimViewModel model)
         {
-            // Ensure ViewBag.UserRole is set before any return to view
-            SetUserRoleViewBag();
-
             if (ModelState.IsValid)
             {
                 if (model.IncidentDate > DateTime.Today)
                 {
                     ModelState.AddModelError("IncidentDate", "Incident date cannot be in the future.");
-                    // Need to re-fetch PolicyNumber if returning to view due to error
                     var policy = await _policyService.GetPolicyByIdAsync(model.PolicyId);
                     ViewBag.PolicyNumber = policy?.PolicyNumber;
                     return View(model);
@@ -331,53 +276,43 @@ namespace Auto_Insurance_Management_System.Controllers
                 if (result)
                 {
                     TempData["Success"] = "Claim submitted successfully!";
-                    return RedirectToAction("MyClaims"); // Redirect to MyClaims after submission
+                    return RedirectToAction("MyClaims");
                 }
-                else
-                {
-                    TempData["Error"] = "Failed to submit claim. Please try again.";
-                }
+                
+                TempData["Error"] = "Failed to submit claim. Please try again.";
             }
 
-            // Re-fetch PolicyNumber if returning to view due to error or service failure
             var failedPolicy = await _policyService.GetPolicyByIdAsync(model.PolicyId);
             ViewBag.PolicyNumber = failedPolicy?.PolicyNumber;
             return View(model);
         }
 
         // GET: Policy/MyClaims
-        [Authorize(Roles = "CUSTOMER")]
+        [Authorize(Roles = nameof(UserRole.CUSTOMER))]
         public async Task<IActionResult> MyClaims()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var claims = await _policyService.GetClaimsByUserIdAsync(userId);
-
-            SetUserRoleViewBag(); // <--- Using the helper method
-
             return View(claims);
         }
 
         // GET: Policy/AllClaims
-        [Authorize(Roles = "ADMIN,AGENT")]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> AllClaims()
         {
             var claims = await _policyService.GetAllClaimsAsync();
-
-            SetUserRoleViewBag(); // <--- Using the helper method
-
             return View(claims);
         }
 
         // POST: Policy/ProcessClaim
         [HttpPost]
-        [ValidateAntiForgeryToken] // Add this for robust security
-        [Authorize(Roles = "ADMIN,AGENT")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> ProcessClaim(int claimId, string status, string? rejectionReason = null)
         {
-            var processedBy = User.Identity.Name; // Agent/Admin who processed it
+            var processedBy = User.Identity.Name;
             if (string.IsNullOrEmpty(processedBy))
             {
-                // Fallback to ID if name isn't reliably available
                 processedBy = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
 
@@ -392,7 +327,7 @@ namespace Auto_Insurance_Management_System.Controllers
                 TempData["Error"] = "Failed to process claim.";
             }
 
-            return RedirectToAction("AllClaims"); // Redirect back to the list of all claims
+            return RedirectToAction("AllClaims");
         }
     }
 }
