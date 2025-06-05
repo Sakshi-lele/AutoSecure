@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization; 
 using Auto_Insurance_Management_System.Models;
 using Auto_Insurance_Management_System.Services;
 using Auto_Insurance_Management_System.ViewModels;
+using System.Security.Claims;
 
 namespace Auto_Insurance_Management_System.Controllers
 {
@@ -74,5 +75,16 @@ namespace Auto_Insurance_Management_System.Controllers
             var user = await _authService.GetUserProfileAsync(userId);
             return View(user);
         }
+
+        // --- NEW ADDITION FOR ACCESS DENIED ---
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            // This action is called when an authenticated user tries to access a resource
+            // for which they do not have the required authorization (e.g., role).
+            // It will look for Views/Auth/AccessDenied.cshtml
+            return View();
+        }
+        // --- END NEW ADDITION ---
     }
 }

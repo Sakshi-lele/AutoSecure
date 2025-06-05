@@ -1,0 +1,25 @@
+﻿@* This file should be placed in: Views/Auth/AccessDenied.cshtml *@
+
+@{
+    ViewData["Title"] = "Access Denied"; // Sets the title for the browser tab/window
+    Layout = "_Layout"; // Assumes you have a shared layout file named _Layout.cshtml
+    // If your layout is different, update this line accordingly (e.g., "~/Views/Shared/_Layout.cshtml")
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 text-danger">Access Denied</h1>
+            <p class="lead">You do not have permission to view this resource.</p>
+            <p>
+                This page requires specific user roles or permissions that your current account does not possess.
+                Please ensure you are logged in with an authorized account.
+            </p>
+            <a href="/" class="btn btn-primary mt-3">Go to Home Page</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="@Url.Action("Logout", "Auth")" class="btn btn-secondary mt-3 ms-2">Logout</a>
+            }
+        </div>
+    </div>
+</div>
