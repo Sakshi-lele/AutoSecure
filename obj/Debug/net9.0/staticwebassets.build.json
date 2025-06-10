@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3BhwOwxuyOiJahv0Csn77HzYhi5Jhps+9PGXlRArjQA=",
+  "Hash": "91SGydf33Ni7o2fJ5v5WKdlFqYpSkSHBSRUBQSRxMeA=",
   "Source": "Auto_Insurance_Management_System",
   "BasePath": "_content/Auto_Insurance_Management_System",
   "Mode": "Default",
@@ -645,6 +645,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Identity": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\iouj9gx6cl-6nq07a5vlf.gz",
+      "SourceId": "Auto_Insurance_Management_System",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Auto_Insurance_Management_System",
+      "RelativePath": "css/dashboard#[.{fingerprint=6nq07a5vlf}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\css\\dashboard.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "1bn6v1s2ou",
+      "Integrity": "fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\css\\dashboard.css"
     },
     {
       "Identity": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\j9brdveimb-fsbi9cje9m.gz",
@@ -1401,6 +1422,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\Auto_Insurance_Management_System.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\css\\dashboard.css",
+      "SourceId": "Auto_Insurance_Management_System",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\",
+      "BasePath": "_content/Auto_Insurance_Management_System",
+      "RelativePath": "css/dashboard#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6nq07a5vlf",
+      "Integrity": "HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\dashboard.css"
     },
     {
       "Identity": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\css\\site.css",
@@ -2752,7 +2794,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2813,7 +2855,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2858,7 +2900,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2913,7 +2955,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2974,7 +3016,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3019,7 +3061,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3074,7 +3116,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3127,7 +3169,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3164,7 +3206,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3211,7 +3253,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3264,7 +3306,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3301,7 +3343,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 04 Jun 2025 10:39:37 GMT"
+          "Value": "Tue, 10 Jun 2025 10:16:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3320,6 +3362,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-5t99Z1ffT5YHaPDiGDsW1KTQ8Fbgol33sWaxkxE/CUc="
+        }
+      ]
+    },
+    {
+      "Route": "css/dashboard.6nq07a5vlf.css",
+      "AssetFile": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\iouj9gx6cl-6nq07a5vlf.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000965250965"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1035"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 05:46:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6nq07a5vlf"
+        },
+        {
+          "Name": "label",
+          "Value": "css/dashboard.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk="
+        }
+      ]
+    },
+    {
+      "Route": "css/dashboard.6nq07a5vlf.css",
+      "AssetFile": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\css\\dashboard.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4025"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 05:46:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6nq07a5vlf"
+        },
+        {
+          "Name": "label",
+          "Value": "css/dashboard.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk="
+        }
+      ]
+    },
+    {
+      "Route": "css/dashboard.6nq07a5vlf.css.gz",
+      "AssetFile": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\iouj9gx6cl-6nq07a5vlf.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1035"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 05:46:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6nq07a5vlf"
+        },
+        {
+          "Name": "label",
+          "Value": "css/dashboard.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk="
+        }
+      ]
+    },
+    {
+      "Route": "css/dashboard.css",
+      "AssetFile": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\iouj9gx6cl-6nq07a5vlf.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000965250965"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1035"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 05:46:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk="
+        }
+      ]
+    },
+    {
+      "Route": "css/dashboard.css",
+      "AssetFile": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\wwwroot\\css\\dashboard.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4025"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 05:46:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HpobfaCoZ3KeG8NVrEjC/bqofx2zJ+U64Y3/Kp1JsWk="
+        }
+      ]
+    },
+    {
+      "Route": "css/dashboard.css.gz",
+      "AssetFile": "C:\\Users\\2406637\\source\\repos\\Auto_Insurance_Management_System\\Auto_Insurance_Management_System\\obj\\Debug\\net9.0\\compressed\\iouj9gx6cl-6nq07a5vlf.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1035"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 05:46:37 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fR580pxvkyoZPz6FUZPYxrrlbKMkST+7EASD1DOrrBk="
         }
       ]
     },

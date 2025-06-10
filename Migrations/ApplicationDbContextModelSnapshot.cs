@@ -71,16 +71,11 @@ namespace Auto_Insurance_Management_System.Migrations
                     b.Property<string>("RejectionReason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ClaimId");
 
                     b.HasIndex("PolicyId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Claims");
+                    b.ToTable("Claim");
                 });
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Policy", b =>
@@ -104,6 +99,10 @@ namespace Auto_Insurance_Management_System.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LicensePlate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PolicyNumber")
                         .IsRequired()
@@ -129,6 +128,17 @@ namespace Auto_Insurance_Management_System.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("VehicleMake")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VehicleModel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VehicleYear")
+                        .HasColumnType("int");
 
                     b.HasKey("PolicyId");
 
@@ -366,10 +376,6 @@ namespace Auto_Insurance_Management_System.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Auto_Insurance_Management_System.Models.User", null)
-                        .WithMany("Claims")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Policy");
                 });
 
@@ -442,8 +448,6 @@ namespace Auto_Insurance_Management_System.Migrations
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.User", b =>
                 {
-                    b.Navigation("Claims");
-
                     b.Navigation("Policies");
                 });
 #pragma warning restore 612, 618

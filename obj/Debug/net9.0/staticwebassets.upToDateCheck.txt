@@ -27,6 +27,7 @@ C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Ma
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\css\dashboard.css
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
@@ -60,6 +61,7 @@ C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Ma
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\css\dashboard.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\js\site.js

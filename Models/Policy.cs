@@ -17,6 +17,13 @@ namespace Auto_Insurance_Management_System.Models
         [Required]
         [StringLength(255)]
         public string VehicleDetails { get; set; } // e.g., Make, Model, Year, VIN
+        public string VehicleMake { get; set; }
+
+        public string VehicleModel { get; set; }
+
+        public int VehicleYear { get; set; }
+
+        public string LicensePlate { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -38,7 +45,7 @@ namespace Auto_Insurance_Management_System.Models
         [DataType(DataType.Date)] // Specifies it's a date only
         public DateTime EndDate { get; set; }
 
-        [Required]
+       
         [StringLength(20)]
         public string PolicyStatus { get; set; } // e.g., "ACTIVE", "INACTIVE", "RENEWED"
 

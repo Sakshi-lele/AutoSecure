@@ -1,138 +1,299 @@
-﻿@model Auto_Insurance_Management_System.Models.User
+﻿@model Auto_Insurance_Management_System.ViewModels.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="jumbotron bg-primary text-white p-4 rounded">
-                <h1 class="display-4">Welcome to Auto Insurance Management System!</h1>
-                <p class="lead">Hello, @Model.FirstName @Model.LastName <span class="badge bg-info">@Model.Role.ToString()</span></p>
+<link rel="stylesheet" href="~/css/dashboard.css" />
+
+<div class="container-fluid mt-4">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <h1 class="display-4 mb-3">Welcome Back!</h1>
+        <p class="lead mb-0">
+            Hello, @Model.CurrentUser.FirstName @Model.CurrentUser.LastName
+            <span class="badge bg-light text-dark ms-2">@Model.CurrentUser.Role.ToString()</span>
+        </p>
+    </div>
+
+    @if (Model.CurrentUser.Role == UserRole.ADMIN)
+    {
+        <!-- Admin Dashboard -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon admin-gradient text-white">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">User Management</h5>
+                        <p class="card-text text-muted">Manage system users, roles, and permissions</p>
+                        <a asp-controller="User" asp-action="Index" class="quick-action-btn">
+                            <strong>Manage Users</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon admin-gradient text-white">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">System Reports</h5>
+                        <p class="card-text text-muted">Comprehensive analytics and business insights</p>
+                        <a asp-controller="Report" asp-action="Index" class="quick-action-btn">
+                            <strong>View Reports</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon admin-gradient text-white">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">System Settings</h5>
+                        <p class="card-text text-muted">Configure system parameters and preferences</p>
+                        <a asp-controller="Setting" asp-action="Index" class="quick-action-btn">
+                            <strong>Settings</strong>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row mt-4">
-        @if (Model.Role == UserRole.ADMIN)
-        {
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">User Management</h5>
-                        <p class="card-text">Manage system users and roles</p>
-                        <a asp-controller="User" asp-action="Index" class="btn btn-primary">Manage Users</a>
+        <!-- Admin Policies Table -->
+        <div class="admin-table mb-5">
+            <div class="card-header admin-gradient text-white p-4">
+                <h4 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>All Policies Overview</h4>
+            </div>
+            <div class="card-body p-0">
+                <div class="search-section">
+                    <div class="row align-items-end">
+                        <div class="col-md-6">
+                            <a asp-controller="Policy" asp-action="Create" class="btn btn-primary btn-lg">
+                                <i class="fas fa-plus me-2"></i>Create New Policy
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <form asp-controller="Policy" asp-action="Index" method="get" class="d-flex gap-2">
+                                <input type="text" name="searchString" value="@ViewBag.CurrentSearch"
+                                       class="form-control" placeholder="Search by Policy Number or Customer Name">
+                                <select name="policyStatus" asp-items="ViewBag.PolicyStatuses" class="form-select"></select>
+                                <button type="submit" class="btn btn-info">Search</button>
+                                <a asp-controller="Policy" asp-action="Index" class="btn btn-secondary">Clear</a>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">System Reports</h5>
-                        <p class="card-text">View system analytics and reports</p>
-                        <a asp-controller="Report" asp-action="Index" class="btn btn-info">View Reports</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">System Settings</h5>
-                        <p class="card-text">Configure system settings</p>
-                        <a asp-controller="Setting" asp-action="Index" class="btn btn-secondary">Settings</a>
-                    </div>
-                </div>
-            </div>
-        }
-        else if (Model.Role == UserRole.AGENT)
-        {
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Policy Management</h5>
-                        <p class="card-text">Create and manage insurance policies</p>
-                        <a asp-controller="Policy" asp-action="Index" class="btn btn-success">Manage Policies</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Claims Processing</h5>
-                        <p class="card-text">Process and approve claims</p>
-                        <a asp-controller="Policy" asp-action="AllClaims" class="btn btn-warning">Process Claims</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Customer Support</h5>
-                        <p class="card-text">Handle customer inquiries</p>
-                        <a asp-controller="Support" asp-action="Index" class="btn btn-info">Support Tickets</a>
-                    </div>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">My Policies</h5>
-                        <p class="card-text">View your insurance policies</p>
-                        <a asp-controller="Policy" asp-action="Index" class="btn btn-primary">View Policies</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">File Claim</h5>
-                        <p class="card-text">Submit a new insurance claim</p>
-                        <a asp-controller="Policy" asp-action="CreateClaim" class="btn btn-danger">File Claim</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Payment History</h5>
-                        <p class="card-text">View payment history</p>
-                        <a asp-controller="Payment" asp-action="Index" class="btn btn-success">View Payments</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Quick Stats</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Policy Number</th>
+                                <th>Customer Name</th>
+                                <th>Vehicle Details</th>
+                                <th>Coverage Type</th>
+                                <th>Coverage Amount</th>
+                                <th>Premium Amount</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th width="120">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.AllPolicies != null && Model.AllPolicies.Any())
+                            {
+                                @foreach (var item in Model.AllPolicies)
+                                {
+                                    <tr>
+                                        <td><strong>@item.PolicyNumber</strong></td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.VehicleDetails</td>
+                                        <td>@item.CoverageType</td>
+                                        <td>$@item.CoverageAmount</td>
+                                        <td>$@item.PremiumAmount</td>
+                                        <td>@item.StartDate.ToString("MM/dd/yyyy")</td>
+                                        <td>@item.EndDate.ToString("MM/dd/yyyy")</td>
+                                        <td>
+                                            @if (item.PolicyStatus.ToString().ToLower() == "active")
+                                            {
+                                                <span class="status-active">ACTIVE</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@item.PolicyStatus</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Policy" asp-action="Details" asp-route-id="@item.PolicyId"
+                                               class="action-btn btn-details" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-controller="Policy" asp-action="Delete" asp-route-id="@item.PolicyId"
+                                               class="action-btn btn-delete" title="Delete Policy">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="10" class="text-center py-5">
+                                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                        <br>No policies found.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-md-3">
-                            <h3 class="text-primary">125</h3>
-                            <p>Active Policies</p>
+            </div>
+        </div>
+    }
+    else if (Model.CurrentUser.Role == UserRole.AGENT)
+    {
+        <!-- Agent Dashboard -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon agent-gradient text-white">
+                            <i class="fas fa-file-contract"></i>
                         </div>
-                        <div class="col-md-3">
-                            <h3 class="text-warning">45</h3>
-                            <p>Pending Claims</p>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 class="text-success">89</h3>
-                            <p>Resolved Claims</p>
-                        </div>
-                        <div class="col-md-3">
-                            <h3 class="text-info">12</h3>
-                            <p>Support Tickets</p>
-                        </div>
+                        <h5 class="card-title fw-bold">Policy Management</h5>
+                        <p class="card-text text-muted">Create, edit and manage insurance policies</p>
+                        <a asp-controller="Policy" asp-action="Index" class="quick-action-btn">
+                            <strong>Manage Policies</strong>
+                        </a>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon agent-gradient text-white">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Claims Processing</h5>
+                        <p class="card-text text-muted">Review, process and approve insurance claims</p>
+                        <a asp-controller="Policy" asp-action="AllClaims" class="quick-action-btn">
+                            <strong>Process Claims</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon agent-gradient text-white">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Customer Support</h5>
+                        <p class="card-text text-muted">Handle customer inquiries and support tickets</p>
+                        <a asp-controller="Support" asp-action="Index" class="quick-action-btn">
+                            <strong>Support Center</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Customer Dashboard -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon customer-gradient text-white">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">My Policies</h5>
+                        <p class="card-text text-muted">View and manage your insurance policies</p>
+                        <a asp-controller="Policy" asp-action="Index" class="quick-action-btn">
+                            <strong>View My Policies</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon customer-gradient text-white">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">File a Claim</h5>
+                        <p class="card-text text-muted">Submit a new insurance claim quickly and easily</p>
+                        <a asp-controller="Policy" asp-action="CreateClaim" class="quick-action-btn">
+                            <strong>File New Claim</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon customer-gradient text-white">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Payment History</h5>
+                        <p class="card-text text-muted">Track your payments and billing information</p>
+                        <a asp-controller="Payment" asp-action="Index" class="quick-action-btn">
+                            <strong>View Payments</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Quick Stats Section -->
+    <div class="row g-4">
+        <div class="col-12 mb-4">
+            <h3 class="text-center mb-4">System Overview</h3>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-number text-primary">125</div>
+                <h6 class="text-muted mb-0">Active Policies</h6>
+                <small class="text-success"><i class="fas fa-arrow-up"></i> +12% this month</small>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-number text-warning">45</div>
+                <h6 class="text-muted mb-0">Pending Claims</h6>
+                <small class="text-warning"><i class="fas fa-clock"></i> Awaiting review</small>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-number text-success">89</div>
+                <h6 class="text-muted mb-0">Resolved Claims</h6>
+                <small class="text-success"><i class="fas fa-check"></i> +5% this week</small>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-number text-info">12</div>
+                <h6 class="text-muted mb-0">Support Tickets</h6>
+                <small class="text-info"><i class="fas fa-headset"></i> Active support</small>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+}

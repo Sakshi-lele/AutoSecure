@@ -1,150 +1,108 @@
-﻿@model Auto_Insurance_Management_System.ViewModels.PolicyDetailsViewModel
+﻿@model Auto_Insurance_Management_System.ViewModels.CreatePolicyViewModel
+
 @{
     ViewData["Title"] = "Edit Policy";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">Edit Policy - @Model.PolicyNumber</h3>
-                    <div class="btn-group">
-                        <a asp-action="Details" asp-route-id="@Model.PolicyId" class="btn btn-info">
-                            <i class="fas fa-eye"></i> View Details
-                        </a>
-                        <a asp-action="Index" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Back to List
-                        </a>
-                    </div>
-                </div>
+<h1>Edit Policy</h1>
 
-                <div class="card-body">
-                    <form asp-action="Edit" method="post">
-                        <input type="hidden" asp-for="PolicyId" />
-                        <input type="hidden" asp-for="PolicyNumber" />
-                        <input type="hidden" asp-for="UserName" />
-                        <input type="hidden" asp-for="DateCreated" />
+<h4>Policy Details</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PolicyId" />
 
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-
-                        <div class="row">
-                            <!-- Vehicle Information -->
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="mb-0"><i class="fas fa-car"></i> Vehicle Information</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <label class="form-label">Customer</label>
-                                            <input type="text" class="form-control" value="@Model.UserName" readonly />
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label asp-for="VehicleDetails" class="form-label"></label>
-                                            <textarea asp-for="VehicleDetails" class="form-control" rows="3"></textarea>
-                                            <span asp-validation-for="VehicleDetails" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Coverage Information -->
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="mb-0"><i class="fas fa-shield-alt"></i> Coverage Information</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <label asp-for="CoverageType" class="form-label"></label>
-                                            <select asp-for="CoverageType" class="form-select">
-                                                <option value="Liability" selected="@(Model.CoverageType == "Liability")">Liability</option>
-                                                <option value="Comprehensive" selected="@(Model.CoverageType == "Comprehensive")">Comprehensive</option>
-                                                <option value="Collision" selected="@(Model.CoverageType == "Collision")">Collision</option>
-                                                <option value="Full Coverage" selected="@(Model.CoverageType == "Full Coverage")">Full Coverage</option>
-                                                <option value="Minimum Coverage" selected="@(Model.CoverageType == "Minimum Coverage")">Minimum Coverage</option>
-                                            </select>
-                                            <span asp-validation-for="CoverageType" class="text-danger"></span>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label asp-for="CoverageAmount" class="form-label"></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input asp-for="CoverageAmount" class="form-control" type="number" step="0.01" />
-                                            </div>
-                                            <span asp-validation-for="CoverageAmount" class="text-danger"></span>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label asp-for="PremiumAmount" class="form-label"></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input asp-for="PremiumAmount" class="form-control" type="number" step="0.01" />
-                                            </div>
-                                            <span asp-validation-for="PremiumAmount" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Policy Period & Status -->
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Policy Period & Status</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label asp-for="StartDate" class="form-label"></label>
-                                                    <input asp-for="StartDate" class="form-control" type="date" />
-                                                    <span asp-validation-for="StartDate" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label asp-for="EndDate" class="form-label"></label>
-                                                    <input asp-for="EndDate" class="form-control" type="date" />
-                                                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label asp-for="PolicyStatus" class="form-label"></label>
-                                                    <select asp-for="PolicyStatus" class="form-select">
-                                                        <option value="ACTIVE" selected="@(Model.PolicyStatus == "ACTIVE")">ACTIVE</option>
-                                                        <option value="INACTIVE" selected="@(Model.PolicyStatus == "INACTIVE")">INACTIVE</option>
-                                                        <option value="EXPIRED" selected="@(Model.PolicyStatus == "EXPIRED")">EXPIRED</option>
-                                                        <option value="CANCELLED" selected="@(Model.PolicyStatus == "CANCELLED")">CANCELLED</option>
-                                                    </select>
-                                                    <span asp-validation-for="PolicyStatus" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-end gap-2">
-                                    <a asp-action="Details" asp-route-id="@Model.PolicyId" class="btn btn-secondary">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save"></i> Update Policy
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="@(new SelectList(ViewBag.Customers, "Value", "Text", Model.UserId))">
+                    <option value="">-- Select Customer --</option>
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
-        </div>
+
+            <div class="form-group">
+                <label asp-for="PolicyNumber" class="control-label"></label>
+                <input asp-for="PolicyNumber" class="form-control" />
+                <span asp-validation-for="PolicyNumber" class="text-danger"></span>
+            </div>
+
+            <h5>Vehicle Information</h5>
+            <div class="form-group">
+                <label asp-for="VehicleMake" class="control-label"></label>
+                <input asp-for="VehicleMake" class="form-control" />
+                <span asp-validation-for="VehicleMake" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VehicleModel" class="control-label"></label>
+                <input asp-for="VehicleModel" class="form-control" />
+                <span asp-validation-for="VehicleModel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VehicleYear" class="control-label"></label>
+                <input asp-for="VehicleYear" class="form-control" type="number" />
+                <span asp-validation-for="VehicleYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LicensePlate" class="control-label"></label>
+                <input asp-for="LicensePlate" class="form-control" />
+                <span asp-validation-for="LicensePlate" class="text-danger"></span>
+            </div>
+
+            <h5>Coverage Details</h5>
+            <div class="form-group">
+                <label asp-for="CoverageType" class="control-label"></label>
+                <input asp-for="CoverageType" class="form-control" />
+                <span asp-validation-for="CoverageType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverageAmount" class="control-label"></label>
+                <input asp-for="CoverageAmount" class="form-control" />
+                <span asp-validation-for="CoverageAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PremiumAmount" class="control-label"></label>
+                <input asp-for="PremiumAmount" class="form-control" />
+                <span asp-validation-for="PremiumAmount" class="text-danger"></span>
+            </div>
+
+            <h5>Policy Dates</h5>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="ACTIVE">Active</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="EXPIRED">Expired</option>
+                    <option value="CANCELLED">Cancelled</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

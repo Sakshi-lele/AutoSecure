@@ -81,10 +81,12 @@
                                             @Model.StartDate.ToString("MM/dd/yyyy") - @Model.EndDate.ToString("MM/dd/yyyy")
                                         </dd>
 
+                                        @* **FIX:** Removed the following lines as PolicyDetailsViewModel does not contain a 'Claims' property.
                                         <dt class="col-sm-4">Claims:</dt>
                                         <dd class="col-sm-8">
                                             <span class="badge bg-info">@Model.Claims.Count</span>
                                         </dd>
+                                        *@
                                     </dl>
                                 </div>
                             </div>
