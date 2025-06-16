@@ -340,6 +340,136 @@ namespace Auto_Insurance_Management_System.Controllers
         // --- END UPDATED HELPER METHOD FOR POPULATING DROPDOWNS ---
 
 
+        // GET: Policy/Request (for Customer)
+        [Authorize(Roles = nameof(UserRole.CUSTOMER))]
+        public IActionResult Request()
+        {
+            var model = new CreatePolicyViewModel
+            {
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddYears(1)
+                // Do NOT set PolicyNumber here if it's generated on submit, or if you want it empty for input
+                // Do NOT set Status here, it's set on POST
+            };
+            PopulateFixedDropdowns(null, null, null);
+            // No need to PopulateCustomersForViewBag here for customer's own request
+            return View(model);
+        }
+
+        // POST: Policy/Request (for Customer)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserRole.CUSTOMER))]
+        public async Task<IActionResult> Request(CreatePolicyViewModel model)
+        {
+            // Re-populate dropdowns immediately for postback scenario
+            PopulateFixedDropdowns(model.VehicleMake, model.VehicleYear, model.CoverageType);
+
+            // --- ADDRESS THE NEW VALIDATION ERRORS HERE ---
+
+            // 1. Policy Status: Remove its error as we set it programmatically
+            if (ModelState.ContainsKey(nameof(model.Status)))
+            {
+                ModelState.Remove(nameof(model.Status));
+            }
+            model.Status = "PENDING"; // Ensure this is set before ModelState.IsValid
+
+            // 2. Customer ID: Remove its error as it's assigned from the current user
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                // This shouldn't happen with [Authorize], but as a fallback
+                ModelState.AddModelError("", "User not identified. Please log in again.");
+                return View(model);
+            }
+            if (ModelState.ContainsKey(nameof(model.UserId))) // Assuming your ViewModel has a UserId property
+            {
+                ModelState.Remove(nameof(model.UserId));
+            }
+            model.UserId = userId; // Assign the User ID here
+
+            // 3. Policy Number: Generate and assign it here, then remove its error
+            if (ModelState.ContainsKey(nameof(model.PolicyNumber)))
+            {
+                ModelState.Remove(nameof(model.PolicyNumber));
+            }
+            model.PolicyNumber = GeneratePolicyNumber(); // Use your helper to generate it
+
+            // --- END ADDRESSING NEW VALIDATION ERRORS ---
+
+
+            if (ModelState.IsValid) // Now check ModelState.IsValid after correcting programmatically set fields
+            {
+                if (model.EndDate <= model.StartDate)
+                {
+                    ModelState.AddModelError("EndDate", "End date must be after start date.");
+                    return View(model);
+                }
+
+                // userId is already set above
+                // model.Status is already "PENDING"
+                // model.PolicyNumber is already generated
+
+                var result = await _policyService.CreatePolicyAsync(model, userId); // Pass userId if service needs it
+
+                if (result)
+                {
+                    TempData["Success"] = "Policy request submitted!";
+                    return RedirectToAction("Index");
+                }
+                TempData["Error"] = "Failed to submit policy request.";
+            }
+
+            // If ModelState.IsValid is false here, it means other fields (like VehicleMake, LicensePlate etc.) are invalid.
+            return View(model);
+        }
+
+        [Authorize(Roles = nameof(UserRole.ADMIN))]
+
+        public async Task<IActionResult> Requests()
+
+        {
+
+            var requests = await _policyService.GetAllPoliciesAsync(null, "PENDING");
+
+            return View(requests);
+
+        }
+
+        [HttpPost]
+
+        [Authorize(Roles = nameof(UserRole.ADMIN))]
+
+        public async Task<IActionResult> Accept(int id)
+
+        {
+
+            await _policyService.UpdatePolicyStatusAsync(id, "ACTIVE", User.Identity.Name);
+
+            TempData["Success"] = "Policy request accepted.";
+
+            return RedirectToAction("Requests");
+
+        }
+
+        [HttpPost]
+
+        [Authorize(Roles = nameof(UserRole.ADMIN))]
+
+        public async Task<IActionResult> Decline(int id)
+
+        {
+
+            await _policyService.UpdatePolicyStatusAsync(id, "DECLINED", User.Identity.Name);
+
+            TempData["Error"] = "Policy request declined.";
+
+            return RedirectToAction("Requests");
+
+        }
+
+
+
         // Helper method to generate a policy number
         private string GeneratePolicyNumber()
         {

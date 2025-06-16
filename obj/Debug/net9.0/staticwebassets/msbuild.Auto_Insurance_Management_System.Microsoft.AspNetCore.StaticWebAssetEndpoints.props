@@ -4,13 +4,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\Auto_Insurance_Management_System.8ayyc0r7ok.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"8ayyc0r7ok"},{"Name":"integrity","Value":"sha256-8CGxTPOhHWe27ismKpGLYlnKyZS8X0xIhFeKcW0P3X4="},{"Name":"label","Value":"_content/Auto_Insurance_Management_System/Auto_Insurance_Management_System.bundle.scp.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1150"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00228CGxTPOhHWe27ismKpGLYlnKyZS8X0xIhFeKcW0P3X4=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 10:16:20 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1150"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00228CGxTPOhHWe27ismKpGLYlnKyZS8X0xIhFeKcW0P3X4=\u0022"},{"Name":"Last-Modified","Value":"Mon, 16 Jun 2025 19:42:30 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Auto_Insurance_Management_System/Auto_Insurance_Management_System.bundle.scp.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\Auto_Insurance_Management_System.8ayyc0r7ok.bundle.scp.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-8CGxTPOhHWe27ismKpGLYlnKyZS8X0xIhFeKcW0P3X4="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1150"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00228CGxTPOhHWe27ismKpGLYlnKyZS8X0xIhFeKcW0P3X4=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Jun 2025 10:16:20 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1150"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u00228CGxTPOhHWe27ismKpGLYlnKyZS8X0xIhFeKcW0P3X4=\u0022"},{"Name":"Last-Modified","Value":"Mon, 16 Jun 2025 19:42:30 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Auto_Insurance_Management_System/css/dashboard.6nq07a5vlf.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\dashboard.css'))</AssetFile>

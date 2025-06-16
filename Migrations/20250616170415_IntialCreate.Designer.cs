@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auto_Insurance_Management_System.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250609100843_AddUserRoleAsString")]
-    partial class AddUserRoleAsString
+    [Migration("20250616170415_IntialCreate")]
+    partial class IntialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,11 +83,11 @@ namespace Auto_Insurance_Management_System.Migrations
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Policy", b =>
                 {
-                    b.Property<int>("PolicyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PolicyId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("CoverageAmount")
                         .HasColumnType("decimal(18, 2)");
@@ -143,7 +143,7 @@ namespace Auto_Insurance_Management_System.Migrations
                     b.Property<int>("VehicleYear")
                         .HasColumnType("int");
 
-                    b.HasKey("PolicyId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 

@@ -8,7 +8,7 @@ namespace Auto_Insurance_Management_System.Models
     public class Policy
     {
         [Key]
-        public int PolicyId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(50)]

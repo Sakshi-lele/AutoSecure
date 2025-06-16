@@ -1,3 +1,12 @@
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.csproj.AssemblyReference.cache
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.AssemblyInfoInputs.cache
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.AssemblyInfo.cs
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.csproj.CoreCompileInputs.cache
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.RazorAssemblyInfo.cache
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.RazorAssemblyInfo.cs
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.sourcelink.json
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\bin\Debug\net9.0\appsettings.json
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\bin\Debug\net9.0\Auto_Insurance_Management_System.staticwebassets.runtime.json
@@ -145,18 +154,10 @@ C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Ma
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.csproj.AssemblyReference.cache
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.AssemblyInfoInputs.cache
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.AssemblyInfo.cs
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.csproj.CoreCompileInputs.cache
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.RazorAssemblyInfo.cache
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.RazorAssemblyInfo.cs
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.sourcelink.json
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\scopedcss\bundle\Auto_Insurance_Management_System.styles.css
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\scopedcss\projectbundle\Auto_Insurance_Management_System.bundle.scp.css
+C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\compressed\iouj9gx6cl-6nq07a5vlf.gz
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\compressed\xhm8wi06ek-b9sayid5wm.gz
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\compressed\shgy0ifahz-61n19gt1b8.gz
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\compressed\f9k9921uti-xtxxf3hu2r.gz
@@ -237,4 +238,3 @@ C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Ma
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.pdb
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\Auto_Insurance_Management_System.genruntimeconfig.cache
 C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\ref\Auto_Insurance_Management_System.dll
-C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\obj\Debug\net9.0\compressed\iouj9gx6cl-6nq07a5vlf.gz

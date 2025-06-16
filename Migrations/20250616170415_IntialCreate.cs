@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Auto_Insurance_Management_System.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,10 +166,14 @@ namespace Auto_Insurance_Management_System.Migrations
                 name: "Policies",
                 columns: table => new
                 {
-                    PolicyId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PolicyNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     VehicleDetails = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    VehicleMake = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleYear = table.Column<int>(type: "int", nullable: false),
+                    LicensePlate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CoverageType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CoverageAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PremiumAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -181,7 +185,7 @@ namespace Auto_Insurance_Management_System.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Policies", x => x.PolicyId);
+                    table.PrimaryKey("PK_Policies", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Policies_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -191,7 +195,7 @@ namespace Auto_Insurance_Management_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Claims",
+                name: "Claim",
                 columns: table => new
                 {
                     ClaimId = table.Column<int>(type: "int", nullable: false)
@@ -206,22 +210,16 @@ namespace Auto_Insurance_Management_System.Migrations
                     ProcessedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateFiled = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateProcessed = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    DateProcessed = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Claims", x => x.ClaimId);
+                    table.PrimaryKey("PK_Claim", x => x.ClaimId);
                     table.ForeignKey(
-                        name: "FK_Claims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Claims_Policies_PolicyId",
+                        name: "FK_Claim_Policies_PolicyId",
                         column: x => x.PolicyId,
                         principalTable: "Policies",
-                        principalColumn: "PolicyId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -265,14 +263,9 @@ namespace Auto_Insurance_Management_System.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Claims_PolicyId",
-                table: "Claims",
+                name: "IX_Claim_PolicyId",
+                table: "Claim",
                 column: "PolicyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Claims_UserId",
-                table: "Claims",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Policies_UserId",
@@ -299,7 +292,7 @@ namespace Auto_Insurance_Management_System.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Claims");
+                name: "Claim");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

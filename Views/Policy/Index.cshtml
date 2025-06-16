@@ -8,7 +8,7 @@
 
 <p>
     @{
-        // Check if the current user is an Admin or Agent
+        // Check if the current user is an Admin or Agent to show "Create New Policy"
         if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()) || User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.AGENT.ToString()))
         {
         <p>
@@ -29,6 +29,30 @@
         </p>
     </div>
 </form>
+
+<div class="mb-3">
+    @{
+        // Only show "Request New Policy" for regular users
+        if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.CUSTOMER.ToString()))
+        {
+            <a asp-controller="Policy" asp-action="Request" class="btn btn-primary">Request New Policy</a>
+        }
+    }
+</div>
+
+<div class="mb-3">
+    @{
+        // Only show "Policy Requests" for Admin
+        if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()))
+        {
+            <a asp-controller="Policy" asp-action="Requests" class="btn btn-warning">Policy Requests</a>
+        }
+    }
+</div>
+
+---
+
+## Policy List
 
 <table class="table">
     <thead>
@@ -98,16 +122,15 @@
                     </td>
                     <td>
                         @{
-                            // Check if the current user is an Agent
+                            // Only show "Edit" for Agent
                             if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.AGENT.ToString()))
                             {
                                 <a asp-action="Edit" asp-route-id="@item.PolicyId">Edit</a>
-
                             }
                         }
-                        <a asp-action="Details" asp-route-id="@item.PolicyId">Details</a> 
+                        <a asp-action="Details" asp-route-id="@item.PolicyId">Details</a>
                         @{
-                            // Check if the current user is an Admin
+                            // Only show "Delete" for Admin
                             if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()))
                             {
                                 <span> | </span> <a asp-action="Delete" asp-route-id="@item.PolicyId">Delete</a>
@@ -121,6 +144,53 @@
         {
             <tr>
                 <td colspan="10" class="text-center">No policies found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+---
+
+## Policy Overview (Simplified)
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Policy Number</th>
+            <th>Vehicle</th>
+            <th>Coverage</th>
+            <th>Premium</th>
+            <th>Dates</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PolicyNumber</td>
+                <td>@item.VehicleDetails</td>
+                <td>@item.CoverageType ($@item.CoverageAmount)</td>
+                <td>$@item.PremiumAmount</td>
+                <td>@item.StartDate.ToShortDateString() - @item.EndDate.ToShortDateString()</td>
+                <td>
+                    @if (item.PolicyStatus == "ACTIVE")
+                    {
+                        <span class="badge bg-success">ACTIVE</span>
+                    }
+                    else if (item.PolicyStatus == "PENDING")
+                    {
+                        <span class="badge bg-warning text-dark">PENDING</span>
+                    }
+                    else if (item.PolicyStatus == "DECLINED")
+                    {
+                        <span class="badge bg-danger">DECLINED</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@item.PolicyStatus</span>
+                    }
+                </td>
             </tr>
         }
     </tbody>

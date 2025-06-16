@@ -41,7 +41,7 @@ namespace Auto_Insurance_Management_System.Services
 
             return await query.Select(p => new PolicyDetailsViewModel
             {
-                PolicyId = p.PolicyId,
+                PolicyId = p.Id,
                 PolicyNumber = p.PolicyNumber,
                 UserName = p.User.UserName,
                 UserId = p.User.Id,
@@ -82,7 +82,7 @@ namespace Auto_Insurance_Management_System.Services
 
             return await query.Select(p => new PolicyDetailsViewModel
             {
-                PolicyId = p.PolicyId,
+                PolicyId = p.Id,
                 PolicyNumber = p.PolicyNumber,
                 UserName = p.User.UserName,
                 UserId = p.User.Id,
@@ -107,7 +107,7 @@ namespace Auto_Insurance_Management_System.Services
         {
             var policy = await _context.Policies
                                          .Include(p => p.User)
-                                         .FirstOrDefaultAsync(p => p.PolicyId == id);
+                                         .FirstOrDefaultAsync(p => p.Id == id);
 
             if (policy == null)
             {
@@ -116,7 +116,7 @@ namespace Auto_Insurance_Management_System.Services
 
             return new PolicyDetailsViewModel
             {
-                PolicyId = policy.PolicyId,
+                PolicyId = policy.Id,
                 PolicyNumber = policy.PolicyNumber,
                 UserName = policy.User?.UserName,
                 UserId = policy.UserId,
@@ -153,7 +153,7 @@ namespace Auto_Insurance_Management_System.Services
                 PremiumAmount = model.PremiumAmount,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
-                PolicyStatus = "ACTIVE",
+                PolicyStatus = model.Status ?? "ACTIVE", //added this rn
                 DateCreated = DateTime.UtcNow
             };
 
