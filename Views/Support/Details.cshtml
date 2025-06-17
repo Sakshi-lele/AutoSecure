@@ -1,0 +1,298 @@
+@using System.Security.Claims
+@model SupportTicket
+@{
+    ViewData["Title"] = "Ticket Details";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isAdmin = User.IsInRole("ADMIN");
+    var isAgent = User.IsInRole("AGENT");
+}
+
+<div class="container mt-4">
+    <!-- Alerts -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Support Ticket #@Model.TicketId</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Tickets
+        </a>
+    </div>
+
+    <!-- Ticket Information Card -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Ticket Details</h4>
+            <span class="badge @GetStatusBadgeClass(Model.Status) fs-6">
+                @Model.Status.GetDisplayName()
+            </span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Policy Number:</dt>
+                        <dd class="col-sm-8">@(Model.Policy?.PolicyNumber ?? "N/A")</dd>
+
+                        <dt class="col-sm-4">Customer:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.User != null)
+                            {
+                                @($"{Model.User.FirstName} {Model.User.LastName}")
+                            }
+                            else
+                            {
+                                @:N/A
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Query Type:</dt>
+                        <dd class="col-sm-8">@Model.QueryType.GetDisplayName()</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Created On:</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt.ToString("MM/dd/yyyy hh:mm tt")</dd>
+
+                        <dt class="col-sm-4">Last Updated:</dt>
+                        <dd class="col-sm-8">
+                            @(Model.UpdatedAt?.ToString("MM/dd/yyyy hh:mm tt") ?? "Not updated")
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <h5>Description:</h5>
+                <div class="border rounded p-3 bg-light">
+                    @Model.Description
+                </div>
+            </div>
+            
+            <!-- Vehicle Details -->
+            <div class="mt-4">
+                <h5>Vehicle Information:</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Make:</dt>
+                            <dd class="col-sm-8">@(Model.Policy?.VehicleMake ?? "N/A")</dd>
+                            
+                            <dt class="col-sm-4">Model:</dt>
+                            <dd class="col-sm-8">@(Model.Policy?.VehicleModel ?? "N/A")</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Year:</dt>
+                            <dd class="col-sm-8">@(Model.Policy?.VehicleYear.ToString() ?? "N/A")</dd>
+                            
+                            <dt class="col-sm-4">License Plate:</dt>
+                            <dd class="col-sm-8">@(Model.Policy?.LicensePlate ?? "N/A")</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Section (Admin/Agent only) -->
+    @if (isAdmin || isAgent)
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Update Ticket Status</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="UpdateStatus" method="post" class="row g-3">
+                    <input type="hidden" name="id" value="@Model.TicketId" />
+                    <div class="col-md-6">
+                        <select name="status" class="form-select">
+                            @foreach (var status in Enum.GetValues(typeof(TicketStatus)).Cast<TicketStatus>())
+                            {
+                                <option value="@status" selected="@(status == Model.Status)">
+                                    @status.GetDisplayName()
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sync-alt me-2"></i>Update Status
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+    <!-- Responses Section -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Responses</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Responses.Any())
+            {
+                <div class="timeline">
+                    @foreach (var response in Model.Responses.OrderBy(r => r.CreatedAt))
+                    {
+                        var isCurrentUserResponse = response.UserId == currentUserId;
+                        var isInternal = response.IsInternalNote;
+                        var displayName = response.User != null ? 
+                            $"{response.User.FirstName} {response.User.LastName}" : 
+                            "Unknown User";
+                        
+                        <div class="timeline-item @(isCurrentUserResponse ? "timeline-item-right" : "")">
+                            <div class="timeline-content @(isInternal ? "internal-note" : "")">
+                                <div class="timeline-header d-flex justify-content-between">
+                                    <strong>@displayName</strong>
+                                    <small class="text-muted">@response.CreatedAt.ToString("MM/dd/yyyy hh:mm tt")</small>
+                                </div>
+                                <div class="timeline-body mt-2">
+                                    @response.Content
+                                </div>
+                                @if (isInternal)
+                                {
+                                    <div class="timeline-footer mt-2">
+                                        <span class="badge bg-dark">
+                                            <i class="fas fa-lock me-1"></i> Internal Note
+                                        </span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No responses yet. Be the first to add a response.</p>
+                </div>
+            }
+
+            <!-- Add Response Form -->
+            <div class="mt-4 p-3 border rounded bg-light">
+                <h5>Add Response</h5>
+                <form asp-action="AddResponse" method="post">
+                    <input type="hidden" name="TicketId" value="@Model.TicketId" />
+                    <div class="mb-3">
+                        <textarea name="Content" class="form-control" rows="4" placeholder="Type your response here..." required></textarea>
+                    </div>
+                    @if (isAdmin || isAgent)
+                    {
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="IsInternalNote" class="form-check-input" id="internalNoteCheck">
+                            <label class="form-check-label" for="internalNoteCheck">Mark as internal note (visible to staff only)</label>
+                        </div>
+                    }
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Response
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Styling for timeline -->
+<style>
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 10px;
+        width: 2px;
+        background-color: #e0e0e0;
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: -24px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #0d6efd;
+        z-index: 1;
+    }
+    
+    .timeline-item-right::before {
+        background-color: #198754;
+    }
+    
+    .timeline-content {
+        background-color: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .internal-note {
+        background-color: #fff8e1;
+        border-color: #ffecb3;
+    }
+    
+    .badge.bg-warning {
+        background-color: #ffc107 !important;
+        color: #212529;
+    }
+    
+    .badge.bg-info {
+        background-color: #0dcaf0 !important;
+        color: #fff;
+    }
+    
+    .badge.bg-success {
+        background-color: #198754 !important;
+        color: #fff;
+    }
+    
+    .badge.bg-secondary {
+        background-color: #6c757d !important;
+        color: #fff;
+    }
+</style>
+
+@functions {
+    public string GetStatusBadgeClass(TicketStatus status)
+    {
+        return status switch
+        {
+            TicketStatus.Open => "bg-warning",
+            TicketStatus.InProgress => "bg-info",
+            TicketStatus.Resolved => "bg-success",
+            TicketStatus.Closed => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -47,6 +47,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPolicyService, PolicyService>();
 
+// Add Support Service Registration (NEW)
+builder.Services.AddScoped<ISupportService, SupportService>();
+
 // Register your background service here
 builder.Services.AddHostedService<PolicyLifecycleBackgroundService>();
 

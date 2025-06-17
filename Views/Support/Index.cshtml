@@ -1,0 +1,89 @@
+@model IEnumerable<SupportTicket>
+@{
+    ViewData["Title"] = "Support Tickets";
+}
+
+<div class="container mt-4">
+  @if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+    <h2 class="mb-4">Support Tickets</h2>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Create New Ticket
+        </a>
+        
+        <form asp-action="Index" method="get" class="d-flex gap-2">
+            <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" 
+                   class="form-control" placeholder="Search tickets...">
+            <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<TicketStatus>()">
+                <option value="">All Statuses</option>
+            </select>
+            <button type="submit" class="btn btn-info">Search</button>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Policy Number</th>
+                    <th>Query Type</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TicketId</td>
+                        <td>@item.Policy?.PolicyNumber</td>
+                        <td>@item.QueryType.GetDisplayName()</td>
+                        <td>@item.CreatedAt.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <span class="badge @GetStatusBadgeClass(item.Status)">
+                                @item.Status.GetDisplayName()
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.TicketId" 
+                               class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i> Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    public string GetStatusBadgeClass(TicketStatus status)
+    {
+        return status switch
+        {
+            TicketStatus.Open => "bg-warning",
+            TicketStatus.InProgress => "bg-info",
+            TicketStatus.Resolved => "bg-success",
+            TicketStatus.Closed => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}

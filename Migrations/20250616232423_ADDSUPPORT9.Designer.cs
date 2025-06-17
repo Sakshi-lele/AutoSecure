@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auto_Insurance_Management_System.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250616170415_IntialCreate")]
-    partial class IntialCreate
+    [Migration("20250616232423_ADDSUPPORT9")]
+    partial class ADDSUPPORT9
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,6 +148,82 @@ namespace Auto_Insurance_Management_System.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Policies");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.SupportTicket", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("PolicyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QueryType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("PolicyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SupportTickets");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.TicketResponse", b =>
+                {
+                    b.Property<int>("ResponseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResponseId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsInternalNote")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ResponseId");
+
+                    b.HasIndex("TicketId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TicketResponses");
                 });
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.User", b =>
@@ -393,6 +469,44 @@ namespace Auto_Insurance_Management_System.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.SupportTicket", b =>
+                {
+                    b.HasOne("Auto_Insurance_Management_System.Models.Policy", "Policy")
+                        .WithMany("SupportTickets")
+                        .HasForeignKey("PolicyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", "User")
+                        .WithMany("SupportTickets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Policy");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.TicketResponse", b =>
+                {
+                    b.HasOne("Auto_Insurance_Management_System.Models.SupportTicket", "SupportTicket")
+                        .WithMany("Responses")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", "User")
+                        .WithMany("TicketResponses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SupportTicket");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -447,11 +561,22 @@ namespace Auto_Insurance_Management_System.Migrations
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Policy", b =>
                 {
                     b.Navigation("Claims");
+
+                    b.Navigation("SupportTickets");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.SupportTicket", b =>
+                {
+                    b.Navigation("Responses");
                 });
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.User", b =>
                 {
                     b.Navigation("Policies");
+
+                    b.Navigation("SupportTickets");
+
+                    b.Navigation("TicketResponses");
                 });
 #pragma warning restore 612, 618
         }

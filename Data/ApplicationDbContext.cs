@@ -17,6 +17,9 @@ namespace Auto_Insurance_Management_System.Data
         public DbSet<Policy> Policies { get; set; }
         // public DbSet<Claim> Claims { get; set; } // Keep if you have a Claim model
 
+        public DbSet<SupportTicket> SupportTickets { get; set; }
+        public DbSet<TicketResponse> TicketResponses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -32,6 +35,18 @@ namespace Auto_Insurance_Management_System.Data
                 .WithMany(u => u.Policies)
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<SupportTicket>()
+                .HasOne(st => st.Policy)
+                .WithMany(p => p.SupportTickets)
+                .HasForeignKey(st => st.PolicyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<SupportTicket>()
+                .HasOne(st => st.User)
+                .WithMany(u => u.SupportTickets)
+                .HasForeignKey(st => st.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

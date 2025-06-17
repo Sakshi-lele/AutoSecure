@@ -17,101 +17,113 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Auto_Insurance_Management_System
 build_property.RootNamespace = Auto_Insurance_Management_System
-build_property.ProjectDir = C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System\
+build_property.ProjectDir = /Users/monkspaces.ai/Desktop/AutoSecure/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\2406637\source\repos\Auto_Insurance_Management_System\Auto_Insurance_Management_System
+build_property.MSBuildProjectDirectory = /Users/monkspaces.ai/Desktop/AutoSecure
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Auth/AccessDenied.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBY2Nlc3NEZW5pZWQuY3NodG1s
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Auth/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aC9BY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Auth/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Auth/Profile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxQcm9maWxlLmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Auth/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aC9Qcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Auth/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aC9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Dashboard/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XENyZWF0ZS5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L0NyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XERlbGV0ZS5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L0RlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XERldGFpbHMuY3NodG1s
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L0RldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XEVkaXQuY3NodG1s
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L0VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Expiring.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XEV4cGlyaW5nLmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Expiring.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L0V4cGlyaW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XEluZGV4LmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Request.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XFJlcXVlc3QuY3NodG1s
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Request.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L1JlcXVlc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Policy/Requests.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9saWN5XFJlcXVlc3RzLmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Policy/Requests.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUG9saWN5L1JlcXVlc3RzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/User/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0LmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Support/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3VwcG9ydC9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/User/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Support/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3VwcG9ydC9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Support/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3VwcG9ydC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/2406637/source/repos/Auto_Insurance_Management_System/Auto_Insurance_Management_System/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-i7zvp1im42
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/monkspaces.ai/Desktop/AutoSecure/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-iuczpb1lxj

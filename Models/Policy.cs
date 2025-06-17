@@ -63,6 +63,7 @@ namespace Auto_Insurance_Management_System.Models
 
         // Navigation property for Claims (if one-to-many relationship)
         public ICollection<Claim> Claims { get; set; } = new List<Claim>();
+        public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new HashSet<SupportTicket>();
     }
 
     // You likely already have this, but confirm your ApplicationUser model

@@ -39,6 +39,8 @@ namespace Auto_Insurance_Management_System.Models
         // Excellent! These navigation properties correctly link User to Policies and Claims.
         public ICollection<Policy> Policies { get; set; }
         //public ICollection<Claim> Claims { get; set; }
+        public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new HashSet<SupportTicket>();
+        public virtual ICollection<TicketResponse> TicketResponses { get; set; } = new HashSet<TicketResponse>();
 
         // Good practice to initialize collections in the constructor to avoid NullReferenceExceptions
         public User()
