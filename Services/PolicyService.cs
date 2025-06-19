@@ -1,6 +1,4 @@
-﻿// Auto_Insurance_Management_System/Services/PolicyService.cs
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Auto_Insurance_Management_System.Data;
 using Auto_Insurance_Management_System.Models;
 using Auto_Insurance_Management_System.ViewModels;
@@ -20,10 +18,10 @@ namespace Auto_Insurance_Management_System.Services
             _context = context;
         }
 
-        // Implementation of GetAllPoliciesAsync
         public async Task<List<PolicyDetailsViewModel>> GetAllPoliciesAsync(string search, string status)
         {
             var query = _context.Policies
+                                 .Where(p => !p.IsDeleted)
                                  .Include(p => p.User)
                                  .AsQueryable();
 
@@ -45,12 +43,11 @@ namespace Auto_Insurance_Management_System.Services
                 PolicyNumber = p.PolicyNumber,
                 UserName = p.User.UserName,
                 UserId = p.User.Id,
-                // *** FIX: Map individual vehicle properties here ***
                 VehicleMake = p.VehicleMake,
                 VehicleModel = p.VehicleModel,
                 VehicleYear = p.VehicleYear,
                 LicensePlate = p.LicensePlate,
-                VehicleDetails = p.VehicleDetails, // Keep this if you still use it elsewhere for combined display
+                VehicleDetails = p.VehicleDetails,
                 CoverageType = p.CoverageType,
                 CoverageAmount = p.CoverageAmount,
                 PremiumAmount = p.PremiumAmount,
@@ -61,11 +58,10 @@ namespace Auto_Insurance_Management_System.Services
             }).ToListAsync();
         }
 
-        // Implementation of GetPoliciesByUserIdAsync
         public async Task<List<PolicyDetailsViewModel>> GetPoliciesByUserIdAsync(string userId, string search, string status)
         {
             var query = _context.Policies
-                                 .Where(p => p.UserId == userId)
+                                 .Where(p => p.UserId == userId && !p.IsDeleted)
                                  .Include(p => p.User)
                                  .AsQueryable();
 
@@ -86,12 +82,11 @@ namespace Auto_Insurance_Management_System.Services
                 PolicyNumber = p.PolicyNumber,
                 UserName = p.User.UserName,
                 UserId = p.User.Id,
-                // *** FIX: Map individual vehicle properties here ***
                 VehicleMake = p.VehicleMake,
                 VehicleModel = p.VehicleModel,
                 VehicleYear = p.VehicleYear,
                 LicensePlate = p.LicensePlate,
-                VehicleDetails = p.VehicleDetails, // Keep this if you still use it elsewhere for combined display
+                VehicleDetails = p.VehicleDetails,
                 CoverageType = p.CoverageType,
                 CoverageAmount = p.CoverageAmount,
                 PremiumAmount = p.PremiumAmount,
@@ -102,7 +97,6 @@ namespace Auto_Insurance_Management_System.Services
             }).ToListAsync();
         }
 
-        // Implementation of GetPolicyByIdAsync
         public async Task<PolicyDetailsViewModel> GetPolicyByIdAsync(int id)
         {
             var policy = await _context.Policies
@@ -120,12 +114,11 @@ namespace Auto_Insurance_Management_System.Services
                 PolicyNumber = policy.PolicyNumber,
                 UserName = policy.User?.UserName,
                 UserId = policy.UserId,
-                // *** FIX: Map individual vehicle properties here ***
                 VehicleMake = policy.VehicleMake,
                 VehicleModel = policy.VehicleModel,
                 VehicleYear = policy.VehicleYear,
                 LicensePlate = policy.LicensePlate,
-                VehicleDetails = policy.VehicleDetails, // Keep this if you still use it elsewhere for combined display
+                VehicleDetails = policy.VehicleDetails,
                 CoverageType = policy.CoverageType,
                 CoverageAmount = policy.CoverageAmount,
                 PremiumAmount = policy.PremiumAmount,
@@ -136,7 +129,6 @@ namespace Auto_Insurance_Management_System.Services
             };
         }
 
-        // Implementation of CreatePolicyAsync - This already looks correct for saving
         public async Task<bool> CreatePolicyAsync(CreatePolicyViewModel model, string userId)
         {
             var policy = new Policy
@@ -147,48 +139,49 @@ namespace Auto_Insurance_Management_System.Services
                 VehicleModel = model.VehicleModel,
                 VehicleYear = model.VehicleYear,
                 LicensePlate = model.LicensePlate,
-                VehicleDetails = $"{model.VehicleYear} {model.VehicleMake} {model.VehicleModel} ({model.LicensePlate})", // Combine details
+                VehicleDetails = $"{model.VehicleYear} {model.VehicleMake} {model.VehicleModel} ({model.LicensePlate})",
                 CoverageAmount = model.CoverageAmount,
                 CoverageType = model.CoverageType,
                 PremiumAmount = model.PremiumAmount,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
-                PolicyStatus = model.Status ?? "ACTIVE", //added this rn
-                DateCreated = DateTime.UtcNow
+                PolicyStatus = model.Status ?? "ACTIVE",
+                DateCreated = DateTime.UtcNow,
+                IsDeleted = false
             };
 
             _context.Policies.Add(policy);
             var saved = await _context.SaveChangesAsync();
             return saved > 0;
         }
+        
         public async Task<PolicyDetailsViewModel> GetPolicyByPolicyNumberAsync(string policyNumber)
-{
-    var policy = await _context.Policies
-        .Include(p => p.User)
-        .FirstOrDefaultAsync(p => p.PolicyNumber == policyNumber);
+        {
+            var policy = await _context.Policies
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.PolicyNumber == policyNumber);
 
-    if (policy == null)
-        return null;
+            if (policy == null)
+                return null;
 
-    return new PolicyDetailsViewModel
-    {
-        PolicyId = policy.Id,
-        PolicyNumber = policy.PolicyNumber,
-        UserId = policy.UserId,
-        UserName = $"{policy.User.FirstName} {policy.User.LastName}",
-        VehicleDetails = policy.VehicleDetails,
-        VehicleModel = policy.VehicleModel,
-        LicensePlate = policy.LicensePlate,
-        CoverageType = policy.CoverageType,
-        CoverageAmount = policy.CoverageAmount,
-        PremiumAmount = policy.PremiumAmount,
-        StartDate = policy.StartDate,
-        EndDate = policy.EndDate,
-        PolicyStatus = policy.PolicyStatus
-    };
-}
+            return new PolicyDetailsViewModel
+            {
+                PolicyId = policy.Id,
+                PolicyNumber = policy.PolicyNumber,
+                UserId = policy.UserId,
+                UserName = $"{policy.User.FirstName} {policy.User.LastName}",
+                VehicleDetails = policy.VehicleDetails,
+                VehicleModel = policy.VehicleModel,
+                LicensePlate = policy.LicensePlate,
+                CoverageType = policy.CoverageType,
+                CoverageAmount = policy.CoverageAmount,
+                PremiumAmount = policy.PremiumAmount,
+                StartDate = policy.StartDate,
+                EndDate = policy.EndDate,
+                PolicyStatus = policy.PolicyStatus
+            };
+        }
 
-        // Implementation of UpdatePolicyStatusAsync - No changes needed here
         public async Task<bool> UpdatePolicyStatusAsync(int id, string status, string processedBy)
         {
             var policy = await _context.Policies.FindAsync(id);
@@ -202,7 +195,6 @@ namespace Auto_Insurance_Management_System.Services
             return true;
         }
 
-        // Implementation of UpdatePolicyAsync - This already looks correct for saving
         public async Task<bool> UpdatePolicyAsync(int id, CreatePolicyViewModel model)
         {
             var existingPolicy = await _context.Policies.FindAsync(id);
@@ -222,28 +214,73 @@ namespace Auto_Insurance_Management_System.Services
             existingPolicy.PremiumAmount = model.PremiumAmount;
             existingPolicy.StartDate = model.StartDate;
             existingPolicy.EndDate = model.EndDate;
-            existingPolicy.PolicyStatus = "ACTIVE"; // Consider if status should always be active on update or derived
+            existingPolicy.PolicyStatus = "ACTIVE";
 
             _context.Policies.Update(existingPolicy);
             var saved = await _context.SaveChangesAsync();
             return saved > 0;
         }
-
-        // Implementation of DeletePolicyAsync - No changes needed here
         public async Task<bool> DeletePolicyAsync(int id)
         {
-            var policy = await _context.Policies.FindAsync(id);
-            if (policy == null)
-            {
-                return false;
-            }
-
-            _context.Policies.Remove(policy);
-            var deleted = await _context.SaveChangesAsync();
-            return deleted > 0;
+            // This method is not used anymore but required by interface
+            // We'll implement soft delete instead
+            throw new NotImplementedException("Use SoftDeletePolicyAsync instead");
         }
 
-        // Implementation of ProcessPolicylifecycleAsync - No changes needed here
+        // Soft delete implementation
+        public async Task<bool> SoftDeletePolicyAsync(int id, string reason, string deletedByUserId)
+        {
+            var policy = await _context.Policies.FindAsync(id);
+            if (policy == null) return false;
+            
+            policy.IsDeleted = true;
+            policy.DeleteReason = reason;
+            policy.DeletedAt = DateTime.UtcNow;
+            policy.DeletedByUserId = deletedByUserId;
+            
+            _context.Policies.Update(policy);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<PolicyDetailsViewModel>> GetDeletedPoliciesAsync()
+        {
+            return await _context.Policies
+                .Where(p => p.IsDeleted)
+                .Include(p => p.User)
+                .Include(p => p.DeletedBy)
+                .Select(p => new PolicyDetailsViewModel
+                {
+                    PolicyId = p.Id,
+                    PolicyNumber = p.PolicyNumber,
+                    UserName = $"{p.User.FirstName} {p.User.LastName}",
+                    VehicleDetails = p.VehicleDetails,
+                    CoverageType = p.CoverageType,
+                    CoverageAmount = p.CoverageAmount,
+                    PremiumAmount = p.PremiumAmount,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PolicyStatus = p.PolicyStatus,
+                    DeleteReason = p.DeleteReason,
+                    DeletedAt = p.DeletedAt,
+                    DeletedBy = $"{p.DeletedBy.FirstName} {p.DeletedBy.LastName}"
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> RestorePolicyAsync(int id)
+        {
+            var policy = await _context.Policies.FindAsync(id);
+            if (policy == null || !policy.IsDeleted) return false;
+            
+            policy.IsDeleted = false;
+            policy.DeleteReason = null;
+            policy.DeletedAt = null;
+            policy.DeletedByUserId = null;
+            
+            _context.Policies.Update(policy);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
         public async Task<bool> ProcessPolicylifecycleAsync(int policyId)
         {
             try

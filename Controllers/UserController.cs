@@ -19,6 +19,8 @@ namespace Auto_Insurance_Management_System.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
+            // Clear TempData to prevent duplicate messages
+            TempData.Clear();
             var users = await _authService.GetAllUsersAsync();
             return View(users);
         }
@@ -30,27 +32,45 @@ namespace Auto_Insurance_Management_System.Controllers
             if (user == null)
                 return NotFound();
 
-            return View(user);
+            var viewModel = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role
+            };
+
+            return View(viewModel);
         }
 
         // POST: User/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, User model)
+        public async Task<IActionResult> Edit(string id, EditUserViewModel model)
         {
             if (id != model.Id)
                 return BadRequest();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _authService.GetUserProfileAsync(id);
+            if (user == null)
+                return NotFound();
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Role = model.Role;
+
+            var result = await _authService.UpdateUserProfileAsync(user);
+            if (result)
             {
-                var result = await _authService.UpdateUserProfileAsync(model);
-                if (result)
-                {
-                    TempData["Success"] = "User updated successfully!";
-                    return RedirectToAction(nameof(Index));
-                }
-                TempData["Error"] = "Failed to update user.";
+                TempData["Success"] = "User updated successfully!";
+                return RedirectToAction(nameof(Index));
             }
+
+            TempData["Error"] = "Failed to update user. Please try again.";
             return View(model);
         }
 

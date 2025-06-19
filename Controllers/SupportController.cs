@@ -153,23 +153,41 @@ public async Task<IActionResult> Create([Bind("PolicyId,QueryType,Description")]
 }
         // POST: Support/AddResponse
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddResponse([Bind("TicketId,Content,IsInternalNote")] TicketResponse response)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> AddResponse(TicketResponse response)
+{
+    response.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    response.CreatedAt = DateTime.UtcNow;
+
+    Console.WriteLine($"Adding response to ticket {response.TicketId}");
+
+
+        try
         {
-            response.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            response.CreatedAt = DateTime.UtcNow;
-
-            if (ModelState.IsValid)
-            {
-                await _supportService.AddResponseAsync(response);
-                return RedirectToAction("Details", new { id = response.TicketId });
-            }
-
-            // If invalid, reload the details view with errors
-            var ticket = await _supportService.GetTicketByIdAsync(response.TicketId);
-            ViewBag.NewResponse = response;
-            return View("Details", ticket);
+            await _supportService.AddResponseAsync(response);
+            TempData["SuccessMessage"] = "Response added successfully!";
+            return RedirectToAction("Details", new { id = response.TicketId });
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding response: {ex}");
+            TempData["ErrorMessage"] = "Failed to add response. Please try again.";
+        }
+    // else
+    // {
+    //     // Log model state errors
+    //     var errors = ModelState.Values.SelectMany(v => v.Errors);
+    //     foreach (var error in errors)
+    //     {
+    //         Console.WriteLine($"Model error: {error.ErrorMessage}");
+    //     }
+    //     TempData["ErrorMessage"] = "Please provide a valid response.";
+    // }
+
+    // Reload ticket details on error
+    var ticket = await _supportService.GetTicketByIdAsync(response.TicketId);
+    return View("Details", ticket);
+}
 
         // POST: Support/UpdateStatus/5
         [HttpPost]

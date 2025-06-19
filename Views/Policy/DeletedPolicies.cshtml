@@ -1,0 +1,36 @@
+@model IEnumerable<Auto_Insurance_Management_System.ViewModels.PolicyDetailsViewModel>
+@{
+    ViewData["Title"] = "Deleted Policies";
+}
+
+<h2>Deleted Policies</h2>
+<a asp-action="Index" class="btn btn-outline-primary mb-3">Back to Policies</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Policy Number</th>
+            <th>Deleted By</th>
+            <th>Reason</th>
+            <th>Deleted On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PolicyNumber</td>
+                <td>@item.DeletedBy</td>
+                <td>@item.DeleteReason</td>
+                <td>@item.DeletedOn?.ToString("g")</td>
+                <td>
+                    <form asp-action="Restore" method="post">
+                        <input type="hidden" name="id" value="@item.PolicyId" />
+                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

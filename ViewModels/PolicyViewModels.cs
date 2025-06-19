@@ -6,28 +6,30 @@ namespace Auto_Insurance_Management_System.ViewModels
 {
     // ViewModel for displaying policy details on the Details page/view
     public class PolicyDetailsViewModel
-    {
-        public int PolicyId { get; set; }
-        public string PolicyNumber { get; set; }
-        public string UserName { get; set; } // Displays the user's full name
-        public string UserId { get; set; } // The ID of the user who owns the policy
-
-        // **CRITICAL FIX for CS1061 in Details.cshtml:**
-        // These properties were missing and are needed to display vehicle information.
-        public string VehicleMake { get; set; }
-        public string VehicleModel { get; set; }
-        public int VehicleYear { get; set; }
-        public string LicensePlate { get; set; }
-
-        public string VehicleDetails { get; set; } // This is likely a combined string for display
-        public string CoverageType { get; set; }
-        public decimal CoverageAmount { get; set; }
-        public decimal PremiumAmount { get; set; } // Also confirmed for display
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string PolicyStatus { get; set; } // Confirmed for display
-        public DateTime DateCreated { get; set; } // Date when the policy was created
-    }
+{
+    public int PolicyId { get; set; }
+    public string PolicyNumber { get; set; } = string.Empty;
+    public string UserName { get; set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
+    public string VehicleMake { get; set; } = string.Empty;
+    public string VehicleModel { get; set; } = string.Empty;
+    public int VehicleYear { get; set; }
+    public string LicensePlate { get; set; } = string.Empty;
+    public string VehicleDetails { get; set; } = string.Empty;
+    public string CoverageType { get; set; } = string.Empty;
+    public decimal CoverageAmount { get; set; }
+    public decimal PremiumAmount { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string PolicyStatus { get; set; } = string.Empty;
+    public DateTime DateCreated { get; set; }
+    
+    // Add these properties for soft delete
+    public string? DeleteReason { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public string? DeletedBy { get; set; }
+    public DateTime? DeletedOn { get; set; }
+}
 
     // ViewModel for creating and editing policies (used for input forms)
     public class CreatePolicyViewModel

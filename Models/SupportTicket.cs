@@ -74,27 +74,27 @@ namespace Auto_Insurance_Management_System.Models
     }
 
     public class TicketResponse
-    {
-        [Key]
-        public int ResponseId { get; set; }
+{
+    [Key]
+    public int ResponseId { get; set; }
 
-        [Required]
-        [ForeignKey("SupportTicket")]
-        public int TicketId { get; set; }
-        public virtual SupportTicket SupportTicket { get; set; }
+    [Required]
+    [ForeignKey("SupportTicket")]
+    public int TicketId { get; set; }
+    public virtual SupportTicket SupportTicket { get; set; }
 
-        [Required]
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public virtual User User { get; set; }
+    [Required]
+    [ForeignKey("User")]
+    public string UserId { get; set; }
+    public virtual User User { get; set; }
 
-        [Required]
-        [StringLength(1000, ErrorMessage = "Response cannot exceed 1000 characters")]
-        public string Content { get; set; }
+    [Required(ErrorMessage = "Response content is required")]
+    [StringLength(1000, ErrorMessage = "Response cannot exceed 1000 characters")]
+    public string Content { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [Display(Name = "Is Internal Note")]
-        public bool IsInternalNote { get; set; } = false;
-    }
+    [Display(Name = "Is Internal Note")]
+    public bool IsInternalNote { get; set; } = false;
+}
 }

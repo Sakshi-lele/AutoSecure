@@ -58,6 +58,14 @@ namespace Auto_Insurance_Management_System.Models
         // Assuming your ApplicationUser has an 'Id' property of type string
         public string UserId { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+        public string? DeleteReason { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public string? DeletedByUserId { get; set; }
+
+        [ForeignKey("DeletedByUserId")]
+        public User? DeletedBy { get; set; }
+
         [ForeignKey("UserId")]
         public User User { get; set; } // Navigation property to the user
 
@@ -66,21 +74,4 @@ namespace Auto_Insurance_Management_System.Models
         public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new HashSet<SupportTicket>();
     }
 
-    // You likely already have this, but confirm your ApplicationUser model
-    // is inheriting from IdentityUser
-    // File: Models/ApplicationUser.cs
-    // using Microsoft.AspNetCore.Identity;
-    // namespace Auto_Insurance_Management_System.Models
-    // {
-    //     public class ApplicationUser : IdentityUser
-    //     {
-    //         // Add any custom properties like FirstName, LastName, etc.
-    //         public string FirstName { get; set; }
-    //         public string LastName { get; set; }
-    //         public DateTime? LastLoginAt { get; set; }
-    //         public bool IsActive { get; set; }
-    //         public DateTime CreatedAt { get; set; }
-    //         public string Role { get; set; } // Consider using Identity Roles for better practice
-    //     }
-    // }
 }

@@ -72,21 +72,21 @@ namespace Auto_Insurance_Management_System.Services
             return ticket;
         }
 
-        public async Task<TicketResponse> AddResponseAsync(TicketResponse response)
-        {
-            _context.TicketResponses.Add(response);
-            await _context.SaveChangesAsync();
+        // public async Task<TicketResponse> AddResponseAsync(TicketResponse response)
+        // {
+        //     _context.TicketResponses.Add(response);
+        //     await _context.SaveChangesAsync();
             
-            // Update ticket's updated timestamp
-            var ticket = await _context.SupportTickets.FindAsync(response.TicketId);
-            if (ticket != null)
-            {
-                ticket.UpdatedAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-            }
+        //     // Update ticket's updated timestamp
+        //     var ticket = await _context.SupportTickets.FindAsync(response.TicketId);
+        //     if (ticket != null)
+        //     {
+        //         ticket.UpdatedAt = DateTime.UtcNow;
+        //         await _context.SaveChangesAsync();
+        //     }
             
-            return response;
-        }
+        //     return response;
+        // }
 
         public async Task<List<SupportTicket>> GetTicketsByPolicyIdAsync(int policyId)
         {
@@ -120,5 +120,31 @@ namespace Auto_Insurance_Management_System.Services
 
             return await query.OrderByDescending(t => t.CreatedAt).ToListAsync();
         }
+
+        public async Task<TicketResponse> AddResponseAsync(TicketResponse response)
+{
+    try
+    {
+        Console.WriteLine($"Adding response to ticket {response.TicketId}");
+        _context.TicketResponses.Add(response);
+        await _context.SaveChangesAsync();
+        Console.WriteLine($"Response added with ID: {response.ResponseId}");
+
+        // Update ticket's updated timestamp
+        var ticket = await _context.SupportTickets.FindAsync(response.TicketId);
+        if (ticket != null)
+        {
+            ticket.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+        
+        return response;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error adding response: {ex}");
+        throw;
+    }
+}
     }
 }

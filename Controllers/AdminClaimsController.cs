@@ -30,7 +30,8 @@ namespace Auto_Insurance_Management_System.Controllers
         .Include(c => c.Policy)
             .ThenInclude(p => p.User)
         .Include(c => c.VerifiedByAgent)
-        .Where(c => c.Status != ClaimStatus.Declined) // Exclude declined claims
+        .Where(c => c.Status != ClaimStatus.Submitted && 
+                   c.Status != ClaimStatus.Declined) // Corrected condition
         .OrderByDescending(c => c.DateOfSubmission)
         .ToListAsync();
     
