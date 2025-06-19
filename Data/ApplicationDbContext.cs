@@ -20,6 +20,11 @@ namespace Auto_Insurance_Management_System.Data
         public DbSet<SupportTicket> SupportTickets { get; set; }
         public DbSet<TicketResponse> TicketResponses { get; set; }
 
+        public DbSet<Claim> Claims { get; set; }
+        public DbSet<ClaimDocument> ClaimDocuments { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -47,6 +52,43 @@ namespace Auto_Insurance_Management_System.Data
                 .WithMany(u => u.SupportTickets)
                 .HasForeignKey(st => st.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Policy>()
+                .HasMany(p => p.Claims)
+                .WithOne(c => c.Policy)
+                .HasForeignKey(c => c.PolicyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.Entity<Claim>()
+                .HasMany(c => c.Documents)
+                .WithOne(d => d.Claim)
+                .HasForeignKey(d => d.ClaimId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                  builder.Entity<Claim>()
+        .HasOne(c => c.Policy)
+        .WithMany(p => p.Claims)
+        .HasForeignKey(c => c.PolicyId)
+        .OnDelete(DeleteBehavior.Restrict);
+    
+    // Add explicit Policy-User relationship
+    builder.Entity<Policy>()
+        .HasOne(p => p.User)
+        .WithMany(u => u.Policies)
+        .HasForeignKey(p => p.UserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+                  builder.Entity<Claim>()
+        .HasOne(c => c.VerifiedByAgent)
+        .WithMany() // No inverse navigation
+        .HasForeignKey(c => c.VerifiedByAgentId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    builder.Entity<Claim>()
+        .HasOne(c => c.ApprovedByAdmin)
+        .WithMany() // No inverse navigation
+        .HasForeignKey(c => c.ApprovedByAdminId)
+        .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,0 +1,78 @@
+@model Auto_Insurance_Management_System.ViewModels.PaymentDetailsViewModel
+@{
+    ViewData["Title"] = "Payment Successful";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+<div class="container mt-5">
+    <div class="text-center">
+        <div class="mb-4">
+            <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+        </div>
+        <h1 class="display-4 text-success mb-3">Payment Successful!</h1>
+        <p class="lead">Your payment has been processed successfully.</p>
+    </div>
+    
+    <div class="card mx-auto mt-5 shadow-lg" style="max-width: 600px;">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="fas fa-receipt me-2"></i> Payment Receipt</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Payment ID:</strong></p>
+                    <p>@Model.PaymentId</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Date:</strong></p>
+                    <p>@DateTime.Now.ToString("dd MMM yyyy hh:mm tt")</p>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Policy Number:</strong></p>
+                    <p>@Model.PolicyNumber</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Amount:</strong></p>
+                    <p class="fw-bold text-success">₹@Model.PaymentAmount.ToString("N0")</p>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Payment Method:</strong></p>
+                    <p>@Model.PaymentMethod</p>
+                </div>
+                <div class="col-md-6">
+                    @if (Model.PaymentMethod == "Card")
+                    {
+                        <p><strong>Card Number:</strong></p>
+                        <p>**** **** **** @(Model.CardNumber?.Substring(Model.CardNumber.Length - 4) ?? "****")</p>
+                    }
+                    else
+                    {
+                        <p><strong>UPI ID:</strong></p>
+                        <p>@(Model.UpiId ?? "N/A")</p>
+                    }
+                </div>
+            </div>
+            
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle me-2"></i>
+                A confirmation email has been sent to your registered email address.
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-5">
+        <a asp-action="PaymentHistory" class="btn btn-primary me-3">
+            <i class="fas fa-history me-2"></i> View Payment History
+        </a>
+        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-home me-2"></i> Go to Dashboard
+        </a>
+    </div>
+</div>

@@ -42,6 +42,9 @@ namespace Auto_Insurance_Management_System.Models
         public virtual ICollection<SupportTicket> SupportTickets { get; set; } = new HashSet<SupportTicket>();
         public virtual ICollection<TicketResponse> TicketResponses { get; set; } = new HashSet<TicketResponse>();
 
+        public virtual ICollection<Claim> ClaimsVerified { get; set; } = new List<Claim>();
+        public virtual ICollection<Claim> ClaimsApproved { get; set; } = new List<Claim>();
+
         // Good practice to initialize collections in the constructor to avoid NullReferenceExceptions
         public User()
         {

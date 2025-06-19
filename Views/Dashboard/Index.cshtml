@@ -17,8 +17,8 @@
 
     @if (Model.CurrentUser.Role == UserRole.ADMIN)
     {
-        <!-- Admin Dashboard -->
         <div class="row g-4 mb-5">
+            <!-- User Management -->
             <div class="col-lg-3 col-md-6">
                 <div class="dashboard-card h-100">
                     <div class="card-body text-center p-4">
@@ -33,6 +33,24 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Claim Management -->
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon admin-gradient text-white">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Claim Management</h5>
+                        <p class="card-text text-muted">Review and process verified insurance claims</p>
+                        <a asp-controller="AdminClaims" asp-action="Index" class="quick-action-btn">
+                            <strong>Manage Claims</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Reports -->
             <div class="col-lg-3 col-md-6">
                 <div class="dashboard-card h-100">
                     <div class="card-body text-center p-4">
@@ -47,21 +65,24 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Payment Management -->
             <div class="col-lg-3 col-md-6">
                 <div class="dashboard-card h-100">
                     <div class="card-body text-center p-4">
                         <div class="feature-icon admin-gradient text-white">
-                            <i class="fas fa-cog"></i>
+                            <i class="fas fa-credit-card"></i>
                         </div>
-                        <h5 class="card-title fw-bold">System Settings</h5>
-                        <p class="card-text text-muted">Configure system parameters and preferences</p>
-                        <a asp-controller="Setting" asp-action="Index" class="quick-action-btn">
-                            <strong>Settings</strong>
+                        <h5 class="card-title fw-bold">Payment Management</h5>
+                        <p class="card-text text-muted">Manage premium payments and billing</p>
+                        <a asp-controller="AdminPayments" asp-action="Index" class="quick-action-btn">
+                            <strong>Manage Payments</strong>
                         </a>
                     </div>
                 </div>
             </div>
-            <!-- New Support Tickets Card -->
+            
+            <!-- Support Tickets -->
             <div class="col-lg-3 col-md-6">
                 <div class="dashboard-card h-100">
                     <div class="card-body text-center p-4">
@@ -111,7 +132,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -184,7 +204,7 @@
     {
         <!-- Agent Dashboard -->
         <div class="row g-4 mb-5">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="dashboard-card h-100">
                     <div class="card-body text-center p-4">
                         <div class="feature-icon agent-gradient text-white">
@@ -198,7 +218,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="dashboard-card h-100">
                     <div class="card-body text-center p-4">
                         <div class="feature-icon agent-gradient text-white">
@@ -206,22 +226,8 @@
                         </div>
                         <h5 class="card-title fw-bold">Claims Processing</h5>
                         <p class="card-text text-muted">Review, process and approve insurance claims</p>
-                        <a asp-controller="Policy" asp-action="AllClaims" class="quick-action-btn">
+                        <a asp-controller="AgentClaims" asp-action="Index" class="quick-action-btn">
                             <strong>Process Claims</strong>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="dashboard-card h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon agent-gradient text-white">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                        <h5 class="card-title fw-bold">Customer Support</h5>
-                        <p class="card-text text-muted">Handle customer inquiries and support tickets</p>
-                        <a asp-controller="Support" asp-action="Index" class="quick-action-btn">
-                            <strong>Support Center</strong>
                         </a>
                     </div>
                 </div>
@@ -230,7 +236,7 @@
     }
     else
     {
-        <!-- Customer Dashboard -->
+        <!-- Original Customer Dashboard -->
         <div class="row g-4 mb-5">
             <div class="col-lg-3">
                 <div class="dashboard-card h-100">
@@ -254,7 +260,7 @@
                         </div>
                         <h5 class="card-title fw-bold">File a Claim</h5>
                         <p class="card-text text-muted">Submit a new insurance claim quickly and easily</p>
-                        <a asp-controller="Policy" asp-action="CreateClaim" class="quick-action-btn">
+                        <a asp-controller="Claims" asp-action="Create" class="quick-action-btn">
                             <strong>File New Claim</strong>
                         </a>
                     </div>
@@ -266,10 +272,10 @@
                         <div class="feature-icon customer-gradient text-white">
                             <i class="fas fa-credit-card"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Payment History</h5>
-                        <p class="card-text text-muted">Track your payments and billing information</p>
+                        <h5 class="card-title fw-bold">Payments</h5>
+                        <p class="card-text text-muted mb-">Manage your premium payments seamlessly here</p>
                         <a asp-controller="Payment" asp-action="Index" class="quick-action-btn">
-                            <strong>View Payments</strong>
+                            <strong>Manage Payments</strong>
                         </a>
                     </div>
                 </div>
@@ -298,28 +304,28 @@
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="stats-card">
-                <div class="stats-number text-primary">125</div>
+                <div class="stats-number text-primary">@Model.ActivePoliciesCount</div>
                 <h6 class="text-muted mb-0">Active Policies</h6>
                 <small class="text-success"><i class="fas fa-arrow-up"></i> +12% this month</small>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="stats-card">
-                <div class="stats-number text-warning">45</div>
+                <div class="stats-number text-warning">@Model.PendingClaimsCount</div>
                 <h6 class="text-muted mb-0">Pending Claims</h6>
                 <small class="text-warning"><i class="fas fa-clock"></i> Awaiting review</small>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="stats-card">
-                <div class="stats-number text-success">89</div>
+                <div class="stats-number text-success">@Model.ResolvedClaimsCount</div>
                 <h6 class="text-muted mb-0">Resolved Claims</h6>
                 <small class="text-success"><i class="fas fa-check"></i> +5% this week</small>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="stats-card">
-                <div class="stats-number text-info">12</div>
+                <div class="stats-number text-info">@Model.ActiveTicketsCount</div>
                 <h6 class="text-muted mb-0">Support Tickets</h6>
                 <small class="text-info"><i class="fas fa-headset"></i> Active support</small>
             </div>
@@ -331,7 +337,6 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 }

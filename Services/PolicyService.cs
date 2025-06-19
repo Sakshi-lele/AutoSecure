@@ -161,6 +161,32 @@ namespace Auto_Insurance_Management_System.Services
             var saved = await _context.SaveChangesAsync();
             return saved > 0;
         }
+        public async Task<PolicyDetailsViewModel> GetPolicyByPolicyNumberAsync(string policyNumber)
+{
+    var policy = await _context.Policies
+        .Include(p => p.User)
+        .FirstOrDefaultAsync(p => p.PolicyNumber == policyNumber);
+
+    if (policy == null)
+        return null;
+
+    return new PolicyDetailsViewModel
+    {
+        PolicyId = policy.Id,
+        PolicyNumber = policy.PolicyNumber,
+        UserId = policy.UserId,
+        UserName = $"{policy.User.FirstName} {policy.User.LastName}",
+        VehicleDetails = policy.VehicleDetails,
+        VehicleModel = policy.VehicleModel,
+        LicensePlate = policy.LicensePlate,
+        CoverageType = policy.CoverageType,
+        CoverageAmount = policy.CoverageAmount,
+        PremiumAmount = policy.PremiumAmount,
+        StartDate = policy.StartDate,
+        EndDate = policy.EndDate,
+        PolicyStatus = policy.PolicyStatus
+    };
+}
 
         // Implementation of UpdatePolicyStatusAsync - No changes needed here
         public async Task<bool> UpdatePolicyStatusAsync(int id, string status, string processedBy)

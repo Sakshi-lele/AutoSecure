@@ -50,6 +50,8 @@ builder.Services.AddScoped<IPolicyService, PolicyService>();
 // Add Support Service Registration (NEW)
 builder.Services.AddScoped<ISupportService, SupportService>();
 
+builder.Services.AddScoped<IClaimService, ClaimService>();
+
 // Register your background service here
 builder.Services.AddHostedService<PolicyLifecycleBackgroundService>();
 

@@ -4,200 +4,122 @@
     ViewData["Title"] = "Policies";
 }
 
-<h1>Policies</h1>
-
-<p>
-    @{
-        // Check if the current user is an Admin or Agent to show "Create New Policy"
-        if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()) || User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.AGENT.ToString()))
-        {
-        <p>
-            <a asp-action="Create" class="btn btn-primary">Create New Policy</a>
-        </p>
-        }
-    }
-</p>
-
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by Policy Number or Customer Name: <input type="text" name="searchString" value="@ViewBag.CurrentSearch" />
-            Policy Status:
-            <select name="policyStatus" asp-items="ViewBag.PolicyStatuses" class="form-control d-inline-block w-auto"></select>
-            <input type="submit" value="Search" class="btn btn-info" /> |
-            <a asp-action="Index" class="btn btn-secondary">Clear Filter</a>
-        </p>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Policies</h1>
+        <div>
+            @if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()) || 
+                 User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.AGENT.ToString()))
+            {
+                <a asp-action="Create" class="btn btn-success">+ Create New Policy</a>
+            }
+        </div>
     </div>
-</form>
 
-<div class="mb-3">
-    @{
-        // Only show "Request New Policy" for regular users
-        if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.CUSTOMER.ToString()))
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Search by Policy Number</label>
+                <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Policy Status</label>
+                <select name="policyStatus" asp-items="ViewBag.PolicyStatuses" class="form-select"></select>
+            </div>
+            <div class="col-md-5 d-flex gap-2">
+                <button type="submit" class="btn btn-info">Search</button>
+                <a asp-action="Index" class="btn btn-secondary">Clear Filter</a>
+            </div>
+        </div>
+    </form>
+
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        @if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.CUSTOMER.ToString()))
         {
             <a asp-controller="Policy" asp-action="Request" class="btn btn-primary">Request New Policy</a>
         }
-    }
-</div>
 
-<div class="mb-3">
-    @{
-        // Only show "Policy Requests" for Admin
-        if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()))
+        @if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()))
         {
-            <a asp-controller="Policy" asp-action="Requests" class="btn btn-warning">Policy Requests</a>
+            <a asp-controller="Policy" asp-action="Requests" class="btn btn-warning">View Policy Requests</a>
         }
-    }
-</div>
+    </div>
 
----
-
-## Policy List
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Policy Number
-            </th>
-            <th>
-                Customer Name
-            </th>
-            <th>
-                Vehicle Details
-            </th>
-            <th>
-                Coverage Type
-            </th>
-            <th>
-                Coverage Amount
-            </th>
-            <th>
-                Premium Amount
-            </th>
-            <th>
-                Start Date
-            </th>
-            <th>
-                End Date
-            </th>
-            <th>
-                Status
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var item in Model)
-            {
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PolicyNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.VehicleDetails)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CoverageType)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CoverageAmount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PremiumAmount)
-                    </td>
-                    <td>
-                        @item.StartDate.ToString("dd/MM/yyyy")
-                    </td>
-                    <td>
-                        @item.EndDate.ToString("dd/MM/yyyy")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PolicyStatus)
-                    </td>
-                    <td>
-                        @{
-                            // Only show "Edit" for Agent
-                            if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.AGENT.ToString()))
-                            {
-                                <a asp-action="Edit" asp-route-id="@item.PolicyId">Edit</a>
-                            }
-                        }
-                        <a asp-action="Details" asp-route-id="@item.PolicyId">Details</a>
-                        @{
-                            // Only show "Delete" for Admin
-                            if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()))
-                            {
-                                <span> | </span> <a asp-action="Delete" asp-route-id="@item.PolicyId">Delete</a>
-                            }
-                        }
-                    </td>
+                    <th>Policy #</th>
+                    <th>Customer Name</th>
+                    <th>Vehicle</th>
+                    <th>Coverage Type</th>
+                    <th>Coverage ₹</th>
+                    <th>Premium ₹</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
                 </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="10" class="text-center">No policies found.</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
----
-
-## Policy Overview (Simplified)
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Policy Number</th>
-            <th>Vehicle</th>
-            <th>Coverage</th>
-            <th>Premium</th>
-            <th>Dates</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.PolicyNumber</td>
-                <td>@item.VehicleDetails</td>
-                <td>@item.CoverageType ($@item.CoverageAmount)</td>
-                <td>$@item.PremiumAmount</td>
-                <td>@item.StartDate.ToShortDateString() - @item.EndDate.ToShortDateString()</td>
-                <td>
-                    @if (item.PolicyStatus == "ACTIVE")
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
                     {
-                        <span class="badge bg-success">ACTIVE</span>
+                        <tr>
+                            <td>@item.PolicyNumber</td>
+                            <td>@item.UserName</td>
+                            <td>@item.VehicleDetails</td>
+                            <td>@item.CoverageType</td>
+                            <td>@item.CoverageAmount.ToString("C")</td>
+                            <td>@item.PremiumAmount.ToString("C")</td>
+                            <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <span class="badge bg-@GetBadgeColor(item.PolicyStatus)">
+                                    @item.PolicyStatus
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    @if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.AGENT.ToString()))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.PolicyId" class="btn btn-outline-primary">Edit</a>
+                                    }
+                                    <a asp-action="Details" asp-route-id="@item.PolicyId" class="btn btn-outline-secondary">Details</a>
+                                    @if (User.IsInRole(Auto_Insurance_Management_System.Models.UserRole.ADMIN.ToString()))
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@item.PolicyId" class="btn btn-outline-danger">Delete</a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else if (item.PolicyStatus == "PENDING")
-                    {
-                        <span class="badge bg-warning text-dark">PENDING</span>
-                    }
-                    else if (item.PolicyStatus == "DECLINED")
-                    {
-                        <span class="badge bg-danger">DECLINED</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">@item.PolicyStatus</span>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">No policies found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    @functions {
+        public string GetBadgeColor(string status)
+        {
+            return status switch
+            {
+                "Active" => "success",
+                "Pending" => "warning",
+                "Expired" => "danger",
+                _ => "secondary"
+            };
+        }
     }
 }

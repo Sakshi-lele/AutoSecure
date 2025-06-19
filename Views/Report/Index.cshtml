@@ -1,0 +1,776 @@
+@{
+    ViewData["Title"] = "Insurance Analytics Dashboard";
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --primary: #4e73df;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --secondary: #858796;
+            --light: #f8f9fc;
+            --dark: #5a5c69;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        
+        .dashboard-card {
+            border-left: 4px solid;
+            transition: transform 0.3s;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: 100%;
+            background: white;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        
+        .card-primary { border-left-color: var(--primary); }
+        .card-success { border-left-color: var(--success); }
+        .card-info { border-left-color: var(--info); }
+        .card-warning { border-left-color: var(--warning); }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            padding: 15px;
+        }
+        
+        .stat-badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+        }
+        
+        .section-title {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            opacity: 0.3;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+        
+        .filter-bar {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+        
+        .trend-indicator {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        .analytics-table th {
+            background-color: #f8f9fc;
+            font-weight: 600;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+}
+    <div class="container">
+        <!-- Page Title -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-light text-dark p-2">Last updated: <span id="current-time"></span></span>
+            </div>
+        </div>
+
+        <!-- Date Filter -->
+        <div class="filter-bar mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label">Date Range</label>
+                    <select id="date-range" class="form-select">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                        <option value="365">Last 12 Months</option>
+                        <option value="0">All Time</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Policy Status</label>
+                    <select id="policy-status" class="form-select">
+                        <option value="all">All Statuses</option>
+                        <option value="ACTIVE">Active</option>
+                        <option value="EXPIRED">Expired</option>
+                        <option value="CANCELLED">Cancelled</option>
+                        <option value="PENDING">Pending</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Claim Status</label>
+                    <select id="claim-status" class="form-select">
+                        <option value="all">All Statuses</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Verified">Verified</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Settled">Settled</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button id="apply-filters" class="btn btn-primary w-100"><i class="fas fa-sync-alt me-2"></i>Apply Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="spinner-border text-primary spinner" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="row mb-4">
+            <!-- Policies Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card card-primary h-100 shadow">
+                    <div class="card-body position-relative">
+                        <i class="fas fa-file-contract card-icon text-primary"></i>
+                        <div class="text-uppercase fw-bold text-primary mb-1">Total Policies</div>
+                        <div id="total-policies" class="stat-number">0</div>
+                        <div class="mb-2">
+                            <span id="active-policies" class="badge bg-success stat-badge">Active: 0</span>
+                            <span id="renewed-policies" class="badge bg-warning stat-badge">Renewed: 0</span>
+                        </div>
+                        <div class="trend-indicator">
+                            <i id="policies-trend-icon" class="fas fa-minus text-secondary me-1"></i>
+                            <span id="policies-trend-text" class="text-secondary fw-bold">0%</span>
+                            <span class="text-muted ms-2">vs last period</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Claims Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card card-success h-100 shadow">
+                    <div class="card-body position-relative">
+                        <i class="fas fa-clipboard-list card-icon text-success"></i>
+                        <div class="text-uppercase fw-bold text-success mb-1">Total Claims</div>
+                        <div id="total-claims" class="stat-number">0</div>
+                        <div class="mb-2">
+                            <span id="avg-claim-amount" class="badge bg-info stat-badge">Avg: ₹0</span>
+                            <span id="rejected-claims" class="badge bg-danger stat-badge">Rejected: 0%</span>
+                        </div>
+                        <div class="trend-indicator">
+                            <i id="claims-trend-icon" class="fas fa-minus text-secondary me-1"></i>
+                            <span id="claims-trend-text" class="text-secondary fw-bold">0%</span>
+                            <span class="text-muted ms-2">vs last period</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card card-info h-100 shadow">
+                    <div class="card-body position-relative">
+                        <i class="fas fa-rupee-sign card-icon text-info"></i>
+                        <div class="text-uppercase fw-bold text-info mb-1">Revenue (30 Days)</div>
+                        <div id="total-revenue" class="stat-number">₹0</div>
+                        <div class="mb-2">
+                            <span id="card-payments" class="badge bg-primary stat-badge">Card: 0%</span>
+                            <span id="upi-payments" class="badge bg-success stat-badge">UPI: 0%</span>
+                        </div>
+                        <div class="trend-indicator">
+                            <i id="revenue-trend-icon" class="fas fa-minus text-secondary me-1"></i>
+                            <span id="revenue-trend-text" class="text-secondary fw-bold">0%</span>
+                            <span class="text-muted ms-2">vs last month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card dashboard-card card-warning h-100 shadow">
+                    <div class="card-body position-relative">
+                        <i class="fas fa-headset card-icon text-warning"></i>
+                        <div class="text-uppercase fw-bold text-warning mb-1">Support Tickets</div>
+                        <div id="total-tickets" class="stat-number">0</div>
+                        <div class="mb-2">
+                            <span id="open-tickets" class="badge bg-danger stat-badge">Open: 0</span>
+                            <span id="billing-tickets" class="badge bg-info stat-badge">Billing: 0%</span>
+                        </div>
+                        <div class="trend-indicator">
+                            <i id="tickets-trend-icon" class="fas fa-minus text-secondary me-1"></i>
+                            <span id="tickets-trend-text" class="text-secondary fw-bold">0%</span>
+                            <span class="text-muted ms-2">vs last month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="row mb-4">
+            <!-- Claims Status Distribution -->
+            <div class="col-xl-6 col-lg-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold text-primary">Claims Status Distribution</h6>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i> Export</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="claimsStatusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy Types Distribution -->
+            <div class="col-xl-6 col-lg-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold text-primary">Policy Coverage Types</h6>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i> Export</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="policyTypesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="row mb-4">
+            <!-- Monthly Claims Trend -->
+            <div class="col-xl-8 col-lg-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold text-primary">Monthly Claims Trend</h6>
+                        <div>
+                            <span class="badge bg-primary me-1">Current Year</span>
+                            <span class="badge bg-secondary">Previous Year</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="claimsTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Distribution -->
+            <div class="col-xl-4 col-lg-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 fw-bold text-primary">User Role Distribution</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="userRolesChart"></canvas>
+                        </div>
+                        <div class="mt-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><i class="fas fa-circle text-primary me-2"></i> Customers</span>
+                                <span id="customer-percent" class="fw-bold">0%</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span><i class="fas fa-circle text-success me-2"></i> Agents</span>
+                                <span id="agent-percent" class="fw-bold">0%</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fas fa-circle text-info me-2"></i> Admins</span>
+                                <span id="admin-percent" class="fw-bold">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 3 -->
+        <div class="row mb-4">
+            <!-- Payment Status -->
+            <div class="col-xl-5 col-lg-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 fw-bold text-primary">Payment Status</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="paymentStatusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Tickets -->
+            <div class="col-xl-7 col-lg-12 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 fw-bold text-primary">Support Ticket Analysis</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="supportTicketsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold text-primary">Recent Claims Activity</h6>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover analytics-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim ID</th>
+                                        <th>Policy Number</th>
+                                        <th>Customer</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date Submitted</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-claims-body">
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@section Scripts {
+    <script>
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('current-time').textContent = now.toLocaleDateString('en-US', options);
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Chart instances
+        let claimsStatusChart, policyTypesChart, claimsTrendChart, userRolesChart, paymentStatusChart, supportTicketsChart;
+        
+        // Fetch data from server
+        async function fetchDashboardData() {
+            try {
+                document.getElementById('loading-overlay').style.display = 'flex';
+                
+                const dateRange = document.getElementById('date-range').value;
+                const policyStatus = document.getElementById('policy-status').value;
+                const claimStatus = document.getElementById('claim-status').value;
+                
+                const response = await axios.get('/Report/GetDashboardData', {
+                    params: {
+                        dateRange,
+                        policyStatus,
+                        claimStatus
+                    }
+                });
+                
+                const data = response.data;
+                
+                // Update metrics cards
+                document.getElementById('total-policies').textContent = data.totalPolicies;
+                document.getElementById('active-policies').textContent = `Active: ${data.activePolicies}`;
+                document.getElementById('renewed-policies').textContent = `Renewed: ${data.renewedPolicies}`;
+                document.getElementById('total-claims').textContent = data.totalClaims;
+                document.getElementById('avg-claim-amount').textContent = `Avg: ₹${data.avgClaimAmount.toFixed(2)}`;
+                document.getElementById('rejected-claims').textContent = `Rejected: ${data.rejectedClaimsPercent}%`;
+                document.getElementById('total-revenue').textContent = `₹${data.totalRevenue.toFixed(2)}`;
+                document.getElementById('card-payments').textContent = `Card: ${data.cardPaymentPercent}%`;
+                document.getElementById('upi-payments').textContent = `UPI: ${data.upiPaymentPercent}%`;
+                document.getElementById('total-tickets').textContent = data.totalTickets;
+                document.getElementById('open-tickets').textContent = `Open: ${data.openTickets}`;
+                document.getElementById('billing-tickets').textContent = `Billing: ${data.billingTicketPercent}%`;
+                
+                // Update user distribution percentages
+                document.getElementById('customer-percent').textContent = `${data.userRoles.CUSTOMER}%`;
+                document.getElementById('agent-percent').textContent = `${data.userRoles.AGENT}%`;
+                document.getElementById('admin-percent').textContent = `${data.userRoles.ADMIN}%`;
+                
+                // Update trend indicators
+                updateTrendIndicator('policies', data.policiesTrend);
+                updateTrendIndicator('claims', data.claimsTrend);
+                updateTrendIndicator('revenue', data.revenueTrend);
+                updateTrendIndicator('tickets', data.ticketsTrend);
+                
+                // Update recent claims table
+                updateRecentClaimsTable(data.recentClaims);
+                
+                // Initialize or update charts
+                updateCharts(data);
+                
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+                alert('Failed to load dashboard data. Please try again.');
+            } finally {
+                document.getElementById('loading-overlay').style.display = 'none';
+            }
+        }
+        
+        function updateTrendIndicator(type, value) {
+            const icon = document.getElementById(`${type}-trend-icon`);
+            const text = document.getElementById(`${type}-trend-text`);
+            
+            if (value > 0) {
+                icon.className = 'fas fa-arrow-up text-success me-1';
+                text.className = 'text-success fw-bold';
+                text.textContent = `+${value}%`;
+            } else if (value < 0) {
+                icon.className = 'fas fa-arrow-down text-danger me-1';
+                text.className = 'text-danger fw-bold';
+                text.textContent = `${value}%`;
+            } else {
+                icon.className = 'fas fa-minus text-secondary me-1';
+                text.className = 'text-secondary fw-bold';
+                text.textContent = '0%';
+            }
+        }
+        
+        function updateRecentClaimsTable(claims) {
+            const tbody = document.getElementById('recent-claims-body');
+            tbody.innerHTML = '';
+            
+            claims.forEach(claim => {
+                const row = document.createElement('tr');
+                
+                // Determine status badge class
+                let badgeClass = 'badge ';
+                switch(claim.status) {
+                    case 'Approved':
+                    case 'Settled':
+                        badgeClass += 'bg-success';
+                        break;
+                    case 'UnderReview':
+                        badgeClass += 'bg-info';
+                        break;
+                    case 'Verified':
+                        badgeClass += 'bg-warning';
+                        break;
+                    case 'Rejected':
+                    case 'Declined':
+                        badgeClass += 'bg-danger';
+                        break;
+                    default:
+                        badgeClass += 'bg-secondary';
+                }
+                
+                row.innerHTML = `
+                    <td>${claim.claimId}</td>
+                    <td>${claim.policyNumber}</td>
+                    <td>${claim.customerName}</td>
+                    <td>${claim.claimType}</td>
+                    <td>₹${claim.amount.toFixed(2)}</td>
+                    <td><span class="${badgeClass}">${claim.status}</span></td>
+                    <td>${new Date(claim.dateSubmitted).toLocaleDateString()}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        function updateCharts(data) {
+            // Claims Status Distribution
+            if (claimsStatusChart) claimsStatusChart.destroy();
+            const claimsCtx = document.getElementById('claimsStatusChart').getContext('2d');
+            claimsStatusChart = new Chart(claimsCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.claimsStatus),
+                    datasets: [{
+                        label: 'Number of Claims',
+                        data: Object.values(data.claimsStatus),
+                        backgroundColor: [
+                            '#4e73df', '#36b9cc', '#f6c23e', '#1cc88a', '#4e73df', '#e74a3b', '#858796'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Policy Types Distribution
+            if (policyTypesChart) policyTypesChart.destroy();
+            const policyCtx = document.getElementById('policyTypesChart').getContext('2d');
+            policyTypesChart = new Chart(policyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data.policyCoverageTypes),
+                    datasets: [{
+                        data: Object.values(data.policyCoverageTypes),
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+                        hoverOffset: 10,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'right',
+                            labels: {
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Claims Trend Chart
+            if (claimsTrendChart) claimsTrendChart.destroy();
+            const trendCtx = document.getElementById('claimsTrendChart').getContext('2d');
+            claimsTrendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Current Year',
+                        data: data.monthlyClaims.currentYear,
+                        borderColor: '#4e73df',
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                        tension: 0.3,
+                        fill: true,
+                        borderWidth: 2
+                    }, {
+                        label: 'Previous Year',
+                        data: data.monthlyClaims.previousYear,
+                        borderColor: '#858796',
+                        backgroundColor: 'rgba(133, 135, 150, 0.05)',
+                        borderDash: [5, 5],
+                        tension: 0.3,
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // User Roles Chart
+            if (userRolesChart) userRolesChart.destroy();
+            const userCtx = document.getElementById('userRolesChart').getContext('2d');
+            userRolesChart = new Chart(userCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Customers', 'Agents', 'Admins'],
+                    datasets: [{
+                        data: Object.values(data.userRoles),
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                        hoverOffset: 10,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Payment Status Chart
+            if (paymentStatusChart) paymentStatusChart.destroy();
+            const paymentCtx = document.getElementById('paymentStatusChart').getContext('2d');
+            paymentStatusChart = new Chart(paymentCtx, {
+                type: 'polarArea',
+                data: {
+                    labels: Object.keys(data.paymentStatus),
+                    datasets: [{
+                        data: Object.values(data.paymentStatus),
+                        backgroundColor: ['#1cc88a', '#f6c23e', '#e74a3b', '#858796', '#36b9cc'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Support Tickets Chart
+            if (supportTicketsChart) supportTicketsChart.destroy();
+            const supportCtx = document.getElementById('supportTicketsChart').getContext('2d');
+            supportTicketsChart = new Chart(supportCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.supportTicketTypes),
+                    datasets: [{
+                        label: 'Open Tickets',
+                        data: Object.values(data.supportTicketTypes),
+                        backgroundColor: '#4e73df',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchDashboardData();
+            
+            // Apply filters button
+            document.getElementById('apply-filters').addEventListener('click', fetchDashboardData);
+        });
+    </script>
+}

@@ -30,52 +30,168 @@ namespace Auto_Insurance_Management_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClaimId"));
 
-                    b.Property<decimal>("ClaimAmount")
+                    b.Property<string>("ApprovedByAdminId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("ClaimAmountRequested")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<string>("ClaimNumber")
+                    b.Property<string>("ClaimType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimStatus")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<decimal?>("DamageEstimate")
+                        .HasColumnType("decimal(18, 2)");
 
-                    b.Property<DateTime>("DateFiled")
+                    b.Property<DateTime?>("DateApproved")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateProcessed")
+                    b.Property<DateTime>("DateOfSubmission")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                    b.Property<DateTime?>("DateVerified")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("IncidentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IncidentType")
+                    b.Property<string>("IncidentDescription")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IncidentLocation")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<TimeSpan>("IncidentTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("OtherClaimType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("PolicyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProcessedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<string>("RejectionReason")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VerifiedByAgentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ClaimId");
 
+                    b.HasIndex("ApprovedByAdminId");
+
                     b.HasIndex("PolicyId");
 
-                    b.ToTable("Claim");
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.HasIndex("VerifiedByAgentId");
+
+                    b.ToTable("Claims");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.ClaimDocument", b =>
+                {
+                    b.Property<int>("DocumentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentId"));
+
+                    b.Property<int>("ClaimId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DocumentId");
+
+                    b.HasIndex("ClaimId");
+
+                    b.ToTable("ClaimDocuments");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("CVV")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardHolderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExpiryDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("PolicyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TransactionId")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("UpiId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("PolicyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Policy", b =>
@@ -446,13 +562,65 @@ namespace Auto_Insurance_Management_System.Migrations
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Claim", b =>
                 {
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", "ApprovedByAdmin")
+                        .WithMany()
+                        .HasForeignKey("ApprovedByAdminId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Auto_Insurance_Management_System.Models.Policy", "Policy")
                         .WithMany("Claims")
+                        .HasForeignKey("PolicyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", null)
+                        .WithMany("ClaimsApproved")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", null)
+                        .WithMany("ClaimsVerified")
+                        .HasForeignKey("UserId1");
+
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", "VerifiedByAgent")
+                        .WithMany()
+                        .HasForeignKey("VerifiedByAgentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ApprovedByAdmin");
+
+                    b.Navigation("Policy");
+
+                    b.Navigation("VerifiedByAgent");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.ClaimDocument", b =>
+                {
+                    b.HasOne("Auto_Insurance_Management_System.Models.Claim", "Claim")
+                        .WithMany("Documents")
+                        .HasForeignKey("ClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Claim");
+                });
+
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.Payment", b =>
+                {
+                    b.HasOne("Auto_Insurance_Management_System.Models.Policy", "Policy")
+                        .WithMany()
                         .HasForeignKey("PolicyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Auto_Insurance_Management_System.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Policy");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Policy", b =>
@@ -460,7 +628,7 @@ namespace Auto_Insurance_Management_System.Migrations
                     b.HasOne("Auto_Insurance_Management_System.Models.User", "User")
                         .WithMany("Policies")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -555,6 +723,11 @@ namespace Auto_Insurance_Management_System.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Auto_Insurance_Management_System.Models.Claim", b =>
+                {
+                    b.Navigation("Documents");
+                });
+
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.Policy", b =>
                 {
                     b.Navigation("Claims");
@@ -569,6 +742,10 @@ namespace Auto_Insurance_Management_System.Migrations
 
             modelBuilder.Entity("Auto_Insurance_Management_System.Models.User", b =>
                 {
+                    b.Navigation("ClaimsApproved");
+
+                    b.Navigation("ClaimsVerified");
+
                     b.Navigation("Policies");
 
                     b.Navigation("SupportTickets");

@@ -1,0 +1,197 @@
+@using Auto_Insurance_Management_System.ViewModels
+@model QuickClaimFormViewModel
+@{
+    ViewData["Title"] = "File Quick Claim";
+}
+
+<div class="container mt-4">
+    <div class="welcome-banner mb-4">
+        <h2 class="display-4 mb-3">
+            <i class="fas fa-file-medical me-2"></i> File a Quick Claim
+        </h2>
+        <a href="@Url.Action("Index", "Claims")" class="btn btn-light">
+            <i class="fas fa-arrow-left me-2"></i> Go to Claims
+        </a>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.UserId)
+
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <h4 class="card-title mb-4">
+                    <i class="fas fa-file-contract me-2"></i> Policy Details
+                </h4>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="SelectedPolicyNumber" class="form-label"></label>
+                        <select asp-for="SelectedPolicyNumber" asp-items="Model.Policies" class="form-select">
+                            <option value="">-- Select Policy --</option>
+                        </select>
+                        <span asp-validation-for="SelectedPolicyNumber" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="VehicleNumber" class="form-label"></label>
+                        <input asp-for="VehicleNumber" class="form-control" placeholder="e.g., KA01AB1234" />
+                        <span asp-validation-for="VehicleNumber" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="PolicyStartDate" class="form-label"></label>
+                        <input asp-for="PolicyStartDate" type="date" class="form-control" />
+                        <span asp-validation-for="PolicyStartDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PolicyEndDate" class="form-label"></label>
+                        <input asp-for="PolicyEndDate" type="date" class="form-control" />
+                        <span asp-validation-for="PolicyEndDate" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <h4 class="card-title mb-4">
+                    <i class="fas fa-car-crash me-2"></i> Incident & Claim Details
+                </h4>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="ClaimType" class="form-label"></label>
+                        <select asp-for="ClaimType" class="form-select">
+                            <option value="Theft">Theft</option>
+                            <option value="Natural Calamity">Natural Calamity</option>
+                            <option value="Fire">Fire</option>
+                            <option value="Damage">Damage</option>
+                            <option value="Accident">Accident</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="ClaimType" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3" id="otherClaimTypeSection" style="display: none;">
+                    <div class="col-md-12">
+                        <label asp-for="OtherClaimType" class="form-label"></label>
+                        <input asp-for="OtherClaimType" class="form-control" placeholder="Specify claim type" />
+                        <span asp-validation-for="OtherClaimType" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="IncidentDate" class="form-label"></label>
+                        <input asp-for="IncidentDate" type="date" class="form-control" />
+                        <span asp-validation-for="IncidentDate" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="IncidentTime" class="form-label"></label>
+                        <input asp-for="IncidentTime" type="time" class="form-control" />
+                        <span asp-validation-for="IncidentTime" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="IncidentLocation" class="form-label"></label>
+                        <input asp-for="IncidentLocation" class="form-control" placeholder="e.g., Main Street & Oak Ave" />
+                        <span asp-validation-for="IncidentLocation" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="IncidentDescription" class="form-label"></label>
+                        <textarea asp-for="IncidentDescription" class="form-control" rows="4" placeholder="Briefly describe what happened..."></textarea>
+                        <span asp-validation-for="IncidentDescription" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="ClaimAmountRequested" class="form-label"></label>
+                        <input asp-for="ClaimAmountRequested" type="number" min="0" step="any" class="form-control" placeholder="e.g., 15000" />
+                        <span asp-validation-for="ClaimAmountRequested" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label asp-for="UploadedFiles" class="form-label"></label>
+                        <input type="file" name="UploadedFiles" multiple class="form-control" />
+                        <small class="form-text text-muted">Select one or more documents (photos, reports, etc.)</small>
+                        <span asp-validation-for="UploadedFiles" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i> Submit Quick Claim
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const claimTypeSelect = document.getElementById('ClaimType');
+            const otherClaimTypeSection = document.getElementById('otherClaimTypeSection');
+            
+            function toggleOtherClaimType() {
+                if (claimTypeSelect.value === 'Other') {
+                    otherClaimTypeSection.style.display = 'block';
+                } else {
+                    otherClaimTypeSection.style.display = 'none';
+                }
+            }
+            
+            claimTypeSelect.addEventListener('change', toggleOtherClaimType);
+            toggleOtherClaimType();
+
+            // Policy selection change handler
+            const policyDropdown = document.getElementById('SelectedPolicyNumber');
+            policyDropdown.addEventListener('change', function() {
+                const selectedPolicyNumber = this.value;
+                if (!selectedPolicyNumber) {
+                    // Clear fields if no policy selected
+                    document.getElementById('VehicleNumber').value = '';
+                    document.getElementById('PolicyStartDate').value = '';
+                    document.getElementById('PolicyEndDate').value = '';
+                    return;
+                }
+
+                // AJAX call to get policy details
+                fetch(`@Url.Action("GetPolicyDetails", "Claims")?policyNumber=${selectedPolicyNumber}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.getElementById('VehicleNumber').value = data.vehicleNumber || '';
+                        document.getElementById('PolicyStartDate').value = data.startDate || '';
+                        document.getElementById('PolicyEndDate').value = data.endDate || '';
+                    })
+                    .catch(error => {
+                        console.error('Error fetching policy details:', error);
+                        alert('Error loading policy details. Please try again.');
+                    });
+            });
+            
+            // Trigger change event if a policy is already selected
+            if (policyDropdown.value) {
+                policyDropdown.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+}

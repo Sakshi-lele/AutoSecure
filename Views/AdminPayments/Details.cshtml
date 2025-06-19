@@ -1,0 +1,149 @@
+@model Auto_Insurance_Management_System.Models.Payment
+@{
+    ViewData["Title"] = "Payment Details";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-file-invoice me-2 text-primary"></i>
+            Payment Details: #@Model.PaymentId
+        </h2>
+        <a asp-action="Index" class="btn btn-light">
+            <i class="fas fa-arrow-left me-2"></i> Back to Payments
+        </a>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="text-primary fw-bold mb-3">Transaction Information</h5>
+                        <div class="border rounded p-3 bg-light">
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Payment ID:</div>
+                                <div class="col-7">@Model.PaymentId</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Status:</div>
+                                <div class="col-7">
+                                    <span class="badge @GetStatusBadge(Model.Status)">
+                                        @Model.Status
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Date:</div>
+                                <div class="col-7">@Model.PaymentDate.ToString("dd MMM yyyy hh:mm tt")</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Transaction ID:</div>
+                                <div class="col-7">@Model.TransactionId</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Method:</div>
+                                <div class="col-7">@Model.PaymentMethod</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 fw-bold">Amount:</div>
+                                <div class="col-7 fw-bold text-success">₹@Model.Amount.ToString("N0")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h5 class="text-primary fw-bold mb-3">Customer Information</h5>
+                        <div class="border rounded p-3 bg-light">
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Customer:</div>
+                                <div class="col-7">@Model.User?.FirstName @Model.User?.LastName</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Email:</div>
+                                <div class="col-7">@Model.User?.Email</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-bold">Policy:</div>
+                                <div class="col-7">@Model.Policy?.PolicyNumber</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 fw-bold">Due Date:</div>
+                                <div class="col-7">@Model.DueDate.ToString("dd MMM yyyy")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @if (Model.PaymentMethod == "Card")
+            {
+                <div class="mb-4">
+                    <h5 class="text-primary fw-bold mb-3">Card Details</h5>
+                    <div class="border rounded p-3 bg-light">
+                        <div class="row mb-2">
+                            <div class="col-5 fw-bold">Card Holder:</div>
+                            <div class="col-7">@Model.CardHolderName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 fw-bold">Card Number:</div>
+                            <div class="col-7">**** **** **** @Model.CardNumber?.Substring(Model.CardNumber.Length - 4)</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 fw-bold">Expiry Date:</div>
+                            <div class="col-7">@Model.ExpiryDate</div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (Model.PaymentMethod == "UPI")
+            {
+                <div class="mb-4">
+                    <h5 class="text-primary fw-bold mb-3">UPI Details</h5>
+                    <div class="border rounded p-3 bg-light">
+                        <div class="row">
+                            <div class="col-5 fw-bold">UPI ID:</div>
+                            <div class="col-7">@Model.UpiId</div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <div class="mb-4">
+                    <h5 class="text-primary fw-bold mb-3">Admin Notes</h5>
+                    <div class="border rounded p-3 bg-light">
+                        <p>@Model.Notes</p>
+                    </div>
+                </div>
+            }
+            
+            <div class="text-center mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.PaymentId" class="btn btn-warning me-2">
+                    <i class="fas fa-edit me-2"></i> Edit Payment
+                </a>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadge(PaymentStatus status)
+    {
+        return status switch
+        {
+            PaymentStatus.Completed => "bg-success",
+            PaymentStatus.Pending => "bg-warning",
+            PaymentStatus.Failed => "bg-danger",
+            PaymentStatus.Declined => "bg-secondary",
+            PaymentStatus.Refunded => "bg-info",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,0 +1,371 @@
+@model Auto_Insurance_Management_System.ViewModels.PaymentDetailsViewModel
+@{
+    ViewData["Title"] = "Make Payment";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<style>
+    .payment-container {
+        max-width: 650px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .payment-header {
+        background: linear-gradient(135deg, #1a6bb0, #0d4a8a);
+        color: white;
+        padding: 1.5rem 2rem;
+        text-align: center;
+    }
+    
+    .payment-summary {
+        background-color: #e8f4ff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem;
+        border-left: 4px solid #1a6bb0;
+    }
+    
+    .payment-form {
+        padding: 0 2rem 2rem;
+    }
+    
+    .payment-method-options {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .payment-method {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 0.75rem 1.25rem;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+    
+    .payment-method.active {
+        border-color: #1a6bb0;
+        background-color: #e8f4ff;
+    }
+    
+    .payment-method input[type="radio"] {
+        margin-right: 0.75rem;
+    }
+    
+    .payment-fieldset {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .card-icon {
+        font-size: 1.5rem;
+        color: #1a6bb0;
+        margin-right: 0.5rem;
+    }
+    
+    .upi-icon {
+        font-size: 1.5rem;
+        color: #5c4ac7;
+        margin-right: 0.5rem;
+    }
+    
+    .payment-btn {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+        color: white;
+        border: none;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1.5rem auto 0;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .payment-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+    
+    .payment-btn i {
+        margin-right: 0.75rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: #1a6bb0;
+        box-shadow: 0 0 0 0.2rem rgba(26, 107, 176, 0.25);
+    }
+    
+    .field-validation-error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .input-group-text {
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+    }
+</style>
+
+<div class="payment-container">
+    <div class="payment-header">
+        <h1 class="h2 mb-0"><i class="fas fa-credit-card me-2"></i>Payment Details</h1>
+    </div>
+    
+    <div class="payment-summary">
+        <h2 class="h4 text-primary"><i class="fas fa-file-invoice me-2"></i>Payment Summary</h2>
+        <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-file-contract fa-lg text-muted me-2"></i>
+                    <div>
+                        <p class="mb-1 text-muted">Policy Number</p>
+                        <p class="h5 mb-0">@Model.PolicyNumber</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-money-bill-wave fa-lg text-muted me-2"></i>
+                    <div>
+                        <p class="mb-1 text-muted">Amount</p>
+                        <p class="h5 mb-0 text-success">₹@Model.PaymentAmount.ToString("N0")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <form asp-action="MakePayment" method="post" class="payment-form" novalidate id="paymentForm">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PolicyId" />
+        <input type="hidden" asp-for="PolicyNumber" />
+        <input type="hidden" asp-for="PaymentAmount" />
+        
+        <div class="mb-4">
+            <label class="form-label">Payment Method</label>
+            <div class="payment-method-options">
+                <div class="payment-method" id="cardMethod">
+                    <input type="radio" id="card" name="PaymentMethod" value="Card" checked class="me-2" />
+                    <label for="card" class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-credit-card card-icon"></i>
+                        Credit/Debit Card
+                    </label>
+                </div>
+                <div class="payment-method" id="upiMethod">
+                    <input type="radio" id="upi" name="PaymentMethod" value="UPI" class="me-2" />
+                    <label for="upi" class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-mobile-alt upi-icon"></i>
+                        UPI
+                    </label>
+                </div>
+            </div>
+            <span asp-validation-for="PaymentMethod" class="field-validation-error"></span>
+        </div>
+        
+        <div id="cardFields">
+            <div class="payment-fieldset">
+                <h3 class="h5 mb-4 text-primary"><i class="fas fa-credit-card me-2"></i>Card Details</h3>
+                
+                <div class="mb-4">
+                    <label class="form-label">Card Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                        <input asp-for="CardNumber" type="text" class="form-control" 
+                               placeholder="1234 5678 9012 3456" 
+                               maxlength="19" />
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label">Expiry Date (MM/YY)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input asp-for="ExpiryDate" type="text" class="form-control" 
+                                   placeholder="MM/YY" 
+                                   maxlength="5" 
+                                   id="expiryDateInput" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label asp-for="CVV" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input asp-for="CVV" type="password" class="form-control" 
+                                   placeholder="123" 
+                                   maxlength="4" />
+                        </div>
+                        <span asp-validation-for="CVV" class="field-validation-error"></span>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label asp-for="CardHolderName" class="form-label"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input asp-for="CardHolderName" type="text" class="form-control" placeholder="John Doe" />
+                    </div>
+                    <span asp-validation-for="CardHolderName" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="upiFields" class="hidden">
+            <div class="payment-fieldset">
+                <h3 class="h5 mb-4 text-primary"><i class="fas fa-mobile-alt me-2"></i>UPI Details</h3>
+                
+                <div class="mb-4">
+                    <label asp-for="UpiId" class="form-label">UPI ID</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-at"></i></span>
+                        <input asp-for="UpiId" type="text" class="form-control" placeholder="example@upi" />
+                    </div>
+                    <span asp-validation-for="UpiId" class="field-validation-error"></span>
+                </div>
+                
+                <div class="alert alert-info d-flex align-items-center mt-4">
+                    <i class="fas fa-info-circle me-3 fa-2x"></i>
+                    <div>
+                        <h5 class="alert-heading">UPI Payment Instructions</h5>
+                        <p class="mb-0">After submitting, you'll be redirected to your UPI app to complete the payment. Please approve the transaction to finalize your payment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-grid mt-4">
+            <button type="submit" class="payment-btn">
+                <i class="fas fa-lock"></i> Pay ₹@Model.PaymentAmount.ToString("N0")
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            // Payment method toggle
+            const cardFieldsDiv = document.getElementById('cardFields');
+            const upiFieldsDiv = document.getElementById('upiFields');
+            const cardMethod = document.getElementById('cardMethod');
+            const upiMethod = document.getElementById('upiMethod');
+            
+            function togglePaymentFields() {
+                const isCardSelected = document.getElementById('card').checked;
+                
+                if (isCardSelected) {
+                    cardFieldsDiv.classList.remove('hidden');
+                    upiFieldsDiv.classList.add('hidden');
+                    cardMethod.classList.add('active');
+                    upiMethod.classList.remove('active');
+                } else {
+                    cardFieldsDiv.classList.add('hidden');
+                    upiFieldsDiv.classList.remove('hidden');
+                    cardMethod.classList.remove('active');
+                    upiMethod.classList.add('active');
+                }
+                
+                // Reset validation
+                const validator = $('#paymentForm').data('validator');
+                if (validator) {
+                    validator.resetForm();
+                }
+            }
+            
+            // Add event listeners to the method containers
+            cardMethod.addEventListener('click', function() {
+                document.getElementById('card').checked = true;
+                togglePaymentFields();
+            });
+            
+            upiMethod.addEventListener('click', function() {
+                document.getElementById('upi').checked = true;
+                togglePaymentFields();
+            });
+            
+            // Also listen to radio button changes directly
+            document.querySelectorAll('input[name="PaymentMethod"]').forEach(function(radio) {
+                radio.addEventListener('change', togglePaymentFields);
+            });
+            
+            // Initialize
+            togglePaymentFields();
+
+            // Card number formatting
+            $('#CardNumber').on('input', function() {
+                let cardNumber = $(this).val().replace(/\D/g, '');
+                let formatted = '';
+                
+                for (let i = 0; i < cardNumber.length; i++) {
+                    if (i > 0 && i % 4 === 0) formatted += ' ';
+                    formatted += cardNumber[i];
+                }
+                
+                $(this).val(formatted);
+            });
+
+            // Expiry date formatting (MM/YY)
+            $('#expiryDateInput').on('input', function() {
+                let value = $(this).val().replace(/\D/g, '');
+                
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                
+                if (value.length > 5) {
+                    value = value.substring(0, 5);
+                }
+                
+                $(this).val(value);
+            });
+
+            // Form submission handler - validate expiry date before submit
+            $('#paymentForm').on('submit', function() {
+                if ($('#card').is(':checked')) {
+                    const expiryDate = $('#expiryDateInput').val();
+                    const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+                    
+                    if (!regex.test(expiryDate)) {
+                        alert('Please enter a valid expiry date in MM/YY format');
+                        return false;
+                    }
+                }
+                return true;
+            });
+        });
+    </script>
+}

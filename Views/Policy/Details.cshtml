@@ -3,93 +3,72 @@
     ViewData["Title"] = "Policy Details";
 }
 
-<h1>Policy Details</h1>
+<div class="container mt-4">
+    <h2 class="mb-3">Policy Details</h2>
 
-<div>
-    <h4>Policy Details for @Model.PolicyNumber</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.PolicyNumber)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.PolicyNumber)
-        </dd>
-        <dt class="col-sm-3">
-            Customer Name
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.VehicleMake)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.VehicleMake)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.VehicleModel)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.VehicleModel)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.VehicleYear)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.VehicleYear)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.LicensePlate)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.LicensePlate)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.CoverageType)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.CoverageType)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.CoverageAmount)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.CoverageAmount)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.PremiumAmount)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.PremiumAmount)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class="col-sm-9">
-            @Model.StartDate.ToString("dd/MM/yyyy")
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class="col-sm-9">
-            @Model.EndDate.ToString("dd/MM/yyyy")
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.PolicyStatus)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.PolicyStatus)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-    </dl>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <strong>Policy #: @Model.PolicyNumber</strong>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Customer Name</dt>
+                <dd class="col-sm-8">@Model.UserName</dd>
+
+                <dt class="col-sm-4">Vehicle Make</dt>
+                <dd class="col-sm-8">@Model.VehicleMake</dd>
+
+                <dt class="col-sm-4">Vehicle Model</dt>
+                <dd class="col-sm-8">@Model.VehicleModel</dd>
+
+                <dt class="col-sm-4">Vehicle Year</dt>
+                <dd class="col-sm-8">@Model.VehicleYear</dd>
+
+                <dt class="col-sm-4">License Plate</dt>
+                <dd class="col-sm-8">@Model.LicensePlate</dd>
+
+                <dt class="col-sm-4">Coverage Type</dt>
+                <dd class="col-sm-8">@Model.CoverageType</dd>
+
+                <dt class="col-sm-4">Coverage Amount</dt>
+                <dd class="col-sm-8">₹@Model.CoverageAmount.ToString("N2")</dd>
+
+                <dt class="col-sm-4">Premium Amount</dt>
+                <dd class="col-sm-8">₹@Model.PremiumAmount.ToString("N2")</dd>
+
+                <dt class="col-sm-4">Policy Start Date</dt>
+                <dd class="col-sm-8">@Model.StartDate.ToString("dd MMM yyyy")</dd>
+
+                <dt class="col-sm-4">Policy End Date</dt>
+                <dd class="col-sm-8">@Model.EndDate.ToString("dd MMM yyyy")</dd>
+
+                <dt class="col-sm-4">Policy Status</dt>
+                <dd class="col-sm-8">
+                    <span class="badge bg-@GetBadgeColor(Model.PolicyStatus)">
+                        @Model.PolicyStatus
+                    </span>
+                </dd>
+
+                <dt class="col-sm-4">Created On</dt>
+                <dd class="col-sm-8">@Model.DateCreated.ToString("dd MMM yyyy, hh:mm tt")</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a asp-action="Edit" asp-route-id="@Model.PolicyId" class="btn btn-outline-primary me-2">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.PolicyId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@functions {
+    public string GetBadgeColor(string status)
+    {
+        return status switch
+        {
+            "Active" => "success",
+            "Pending" => "warning",
+            "Expired" => "danger",
+            _ => "secondary"
+        };
+    }
+}

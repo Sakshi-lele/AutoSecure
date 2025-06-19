@@ -1,0 +1,87 @@
+@model Auto_Insurance_Management_System.Models.Payment
+@{
+    ViewData["Title"] = "Edit Payment";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-edit me-2 text-warning"></i>
+            Edit Payment: #@Model.PaymentId
+        </h2>
+        <a asp-action="Index" class="btn btn-light">
+            <i class="fas fa-arrow-left me-2"></i> Back to Payments
+        </a>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="PaymentId" />
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label fw-bold"></label>
+                            <select asp-for="Status" class="form-select">
+                                <option value="Completed">Completed</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Failed">Failed</option>
+                                <option value="Declined">Declined</option>
+                                <option value="Refunded">Refunded</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Amount" class="control-label fw-bold"></label>
+                            <input asp-for="Amount" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label asp-for="Notes" class="control-label fw-bold"></label>
+                    <textarea asp-for="Notes" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label class="control-label fw-bold">Customer</label>
+                    <p class="form-control-plaintext">@Model.User?.FirstName @Model.User?.LastName</p>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label fw-bold">Policy</label>
+                            <p class="form-control-plaintext">@Model.Policy?.PolicyNumber</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label fw-bold">Payment Method</label>
+                            <p class="form-control-plaintext">@Model.PaymentMethod</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-save me-2"></i> Save Changes
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+                        <i class="fas fa-times me-2"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

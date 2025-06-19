@@ -1,0 +1,209 @@
+@using Auto_Insurance_Management_System.ViewModels
+@using Auto_Insurance_Management_System.Models 
+@model ClaimDetailsViewModel
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="fas fa-file-invoice me-2 text-primary"></i>
+            Claim Details: #@Model.ClaimId
+        </h2>
+        <a asp-action="Index" class="btn btn-light">
+            <i class="fas fa-arrow-left me-2"></i> Back to Claims
+        </a>
+    </div>
+    
+    <div class="card shadow-lg mb-4">
+        <div class="card-body">
+            <div class="row g-4">
+                <!-- Policy Details -->
+                <div class="col-md-6">
+                    <div class="dashboard-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-primary mb-3">
+                                <i class="fas fa-file-contract me-2"></i>
+                                Policy Details
+                            </h5>
+                            <div class="claim-detail-item">
+                                <span class="fw-bold">Policy #:</span> @Model.PolicyNumber
+                            </div>
+                            <div class="claim-detail-item">
+                                <span class="fw-bold">Vehicle:</span> @Model.VehicleModel (@Model.VehicleNumber)
+                            </div>
+                            <div class="claim-detail-item">
+                                <span class="fw-bold">Coverage:</span> ₹@Model.CoverageAmount.ToString("N0")
+                            </div>
+                            <div class="claim-detail-item">
+                                <span class="fw-bold">Period:</span> 
+                                @Model.PolicyStartDate.ToShortDateString() to @Model.PolicyEndDate.ToShortDateString()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Claim Status -->
+                <div class="col-md-6">
+                    <div class="dashboard-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-primary mb-3">
+                                <i class="fas fa-clipboard-check me-2"></i>
+                                Claim Status
+                            </h5>
+                            <div class="claim-detail-item">
+                                <span class="fw-bold">Status:</span> 
+                                <span class="badge @GetStatusBadge(Model.Status)">@Model.Status</span>
+                            </div>
+                            <div class="claim-detail-item">
+                                <span class="fw-bold">Submitted:</span> 
+                                @Model.DateOfSubmission.ToString("MM/dd/yyyy hh:mm tt")
+                            </div>
+                            @if (Model.VerifiedByAgent != null)
+                            {
+                                <div class="claim-detail-item">
+                                    <span class="fw-bold">Verified By:</span> @Model.VerifiedByAgent
+                                </div>
+                            }
+                            @if (Model.ApprovedByAdmin != null)
+                            {
+                                <div class="claim-detail-item">
+                                    <span class="fw-bold">Approved By:</span> @Model.ApprovedByAdmin
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Claim Information -->
+                <div class="col-12">
+                    <div class="dashboard-card">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-primary mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Claim Information
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="claim-detail-item">
+                                        <span class="fw-bold">Claim Type:</span> @Model.ClaimType
+                                    </div>
+                                    <div class="claim-detail-item">
+                                        <span class="fw-bold">Incident Date:</span> @Model.IncidentDate.ToShortDateString()
+                                    </div>
+                                    <div class="claim-detail-item">
+                                        <span class="fw-bold">Incident Time:</span> @Model.IncidentTime.ToString(@"hh\:mm")
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="claim-detail-item">
+                                        <span class="fw-bold">Location:</span> @Model.LocationOfIncident
+                                    </div>
+                                    <div class="claim-detail-item">
+                                        <span class="fw-bold">Amount Requested:</span> ₹@Model.ClaimAmountRequested.ToString("N0")
+                                    </div>
+                                    @if (Model.DamageEstimate.HasValue)
+                                    {
+                                        <div class="claim-detail-item">
+                                            <span class="fw-bold">Damage Estimate:</span> ₹@Model.DamageEstimate.Value.ToString("N0")
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h6 class="fw-bold">Description:</h6>
+                                <div class="border rounded p-3 bg-light">
+                                    @Model.IncidentDescription
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents -->
+                @if (Model.UploadedDocuments.Any())
+                {
+                    <div class="col-12">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-primary mb-3">
+                                    <i class="fas fa-file-upload me-2"></i>
+                                    Uploaded Documents
+                                </h5>
+                                <div class="row">
+                                    @foreach (var doc in Model.UploadedDocuments)
+                                    {
+                                        <div class="col-md-4 mb-3">
+                                            <div class="border rounded p-3 d-flex align-items-center">
+                                                <i class="fas fa-file-pdf text-danger me-3 fs-4"></i>
+                                                <div class="flex-grow-1 text-truncate">
+                                                    <a href="@doc.FilePath" target="_blank" class="text-decoration-none text-primary fw-bold">
+                                                        @doc.FileName
+                                                    </a>
+                                                    <div class="text-muted small">Click to view</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadge(ClaimStatus status)
+    {
+        return status switch
+        {
+            ClaimStatus.Submitted => "bg-secondary",
+            ClaimStatus.Open => "bg-primary",
+            ClaimStatus.UnderReview => "bg-info",
+            ClaimStatus.Approved => "bg-success",
+            ClaimStatus.Rejected => "bg-danger",
+            ClaimStatus.Settled => "bg-warning",
+            _ => "bg-secondary"
+        };
+    }
+}
+
+<style>
+    .claim-detail-item {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .claim-detail-item:last-child {
+        border-bottom: none;
+    }
+    
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: none;
+        overflow: hidden;
+        height: 100%;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
+    }
+</style>

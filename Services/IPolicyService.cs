@@ -10,6 +10,7 @@ namespace Auto_Insurance_Management_System.Services
     {
         Task<List<PolicyDetailsViewModel>> GetAllPoliciesAsync(string search, string status);
         Task<List<PolicyDetailsViewModel>> GetPoliciesByUserIdAsync(string userId, string search, string status);
+        Task<PolicyDetailsViewModel> GetPolicyByPolicyNumberAsync(string policyNumber);
 
         Task<PolicyDetailsViewModel> GetPolicyByIdAsync(int id);
         Task<bool> CreatePolicyAsync(CreatePolicyViewModel model, string userId);
