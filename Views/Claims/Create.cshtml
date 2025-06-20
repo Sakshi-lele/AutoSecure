@@ -28,7 +28,7 @@
                 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label asp-for="SelectedPolicyNumber" class="form-label"></label>
+                        <label asp-for="SelectedPolicyNumber" class="form-label"></label><span class="text-danger"> *</span>
                         <select asp-for="SelectedPolicyNumber" asp-items="Model.Policies" class="form-select">
                             <option value="">-- Select Policy --</option>
                         </select>
@@ -38,7 +38,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label asp-for="VehicleNumber" class="form-label"></label>
+                        <label asp-for="VehicleNumber" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="VehicleNumber" class="form-control" placeholder="e.g., KA01AB1234" />
                         <span asp-validation-for="VehicleNumber" class="text-danger small"></span>
                     </div>
@@ -46,12 +46,12 @@
 
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <label asp-for="PolicyStartDate" class="form-label"></label>
+                        <label asp-for="PolicyStartDate" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="PolicyStartDate" type="date" class="form-control" />
                         <span asp-validation-for="PolicyStartDate" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="PolicyEndDate" class="form-label"></label>
+                        <label asp-for="PolicyEndDate" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="PolicyEndDate" type="date" class="form-control" />
                         <span asp-validation-for="PolicyEndDate" class="text-danger small"></span>
                     </div>
@@ -63,7 +63,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label asp-for="ClaimType" class="form-label"></label>
+                        <label asp-for="ClaimType" class="form-label"></label><span class="text-danger"> *</span>
                         <select asp-for="ClaimType" class="form-select">
                             <option value="Theft">Theft</option>
                             <option value="Natural Calamity">Natural Calamity</option>
@@ -78,7 +78,7 @@
 
                 <div class="row mb-3" id="otherClaimTypeSection" style="display: none;">
                     <div class="col-md-12">
-                        <label asp-for="OtherClaimType" class="form-label"></label>
+                        <label asp-for="OtherClaimType" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="OtherClaimType" class="form-control" placeholder="Specify claim type" />
                         <span asp-validation-for="OtherClaimType" class="text-danger small"></span>
                     </div>
@@ -86,12 +86,12 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label asp-for="IncidentDate" class="form-label"></label>
+                        <label asp-for="IncidentDate" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="IncidentDate" type="date" class="form-control" />
                         <span asp-validation-for="IncidentDate" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6">
-                        <label asp-for="IncidentTime" class="form-label"></label>
+                        <label asp-for="IncidentTime" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="IncidentTime" type="time" class="form-control" />
                         <span asp-validation-for="IncidentTime" class="text-danger small"></span>
                     </div>
@@ -99,7 +99,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label asp-for="IncidentLocation" class="form-label"></label>
+                        <label asp-for="IncidentLocation" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="IncidentLocation" class="form-control" placeholder="e.g., Main Street & Oak Ave" />
                         <span asp-validation-for="IncidentLocation" class="text-danger small"></span>
                     </div>
@@ -107,7 +107,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label asp-for="IncidentDescription" class="form-label"></label>
+                        <label asp-for="IncidentDescription" class="form-label"></label><span class="text-danger"> *</span>
                         <textarea asp-for="IncidentDescription" class="form-control" rows="4" placeholder="Briefly describe what happened..."></textarea>
                         <span asp-validation-for="IncidentDescription" class="text-danger small"></span>
                     </div>
@@ -115,7 +115,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label asp-for="ClaimAmountRequested" class="form-label"></label>
+                        <label asp-for="ClaimAmountRequested" class="form-label"></label><span class="text-danger"> *</span>
                         <input asp-for="ClaimAmountRequested" type="number" min="0" step="any" class="form-control" placeholder="e.g., 15000" />
                         <span asp-validation-for="ClaimAmountRequested" class="text-danger small"></span>
                     </div>
@@ -123,7 +123,7 @@
 
                 <div class="row mb-4">
                     <div class="col-md-12">
-                        <label asp-for="UploadedFiles" class="form-label"></label>
+                        <label asp-for="UploadedFiles" class="form-label"></label><span class="text-danger"> *</span>
                         <input type="file" name="UploadedFiles" multiple class="form-control" />
                         <small class="form-text text-muted">Select one or more documents (photos, reports, etc.)</small>
                         <span asp-validation-for="UploadedFiles" class="text-danger small"></span>

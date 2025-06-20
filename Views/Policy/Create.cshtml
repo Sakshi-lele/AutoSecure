@@ -13,7 +13,7 @@
     <fieldset class="border p-3 mb-4">
         <legend class="w-auto px-2">Customer Information</legend>
         <div class="mb-3">
-            <label asp-for="UserId" class="form-label"></label>
+            <label asp-for="UserId" class="form-label"></label><span class="text-danger"> *</span>
             <select asp-for="UserId" class="form-control" asp-items="@(new SelectList(ViewBag.Customers, "Value", "Text"))">
                 <option value="">-- Select Customer --</option>
             </select>
@@ -32,7 +32,7 @@
         <legend class="w-auto px-2">Vehicle Information</legend>
 
         <div class="mb-3">
-            <label asp-for="VehicleMake" class="form-label"></label>
+            <label asp-for="VehicleMake" class="form-label"></label><span class="text-danger"> *</span>
             <select asp-for="VehicleMake" class="form-control" asp-items="@ViewBag.VehicleMakes">
                 <option value="">-- Select Make --</option>
             </select>
@@ -40,13 +40,13 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="VehicleModel" class="form-label"></label>
+            <label asp-for="VehicleModel" class="form-label"></label><span class="text-danger"> *</span>
             <input asp-for="VehicleModel" class="form-control" />
             <span asp-validation-for="VehicleModel" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="VehicleYear" class="form-label"></label>
+            <label asp-for="VehicleYear" class="form-label"></label><span class="text-danger"> *</span>
             <select asp-for="VehicleYear" class="form-control" asp-items="@ViewBag.VehicleYears">
                 <option value="">-- Select Year --</option>
             </select>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="LicensePlate" class="form-label"></label>
+            <label asp-for="LicensePlate" class="form-label"></label><span class="text-danger"> *</span>
             <input asp-for="LicensePlate" class="form-control" />
             <span asp-validation-for="LicensePlate" class="text-danger"></span>
         </div>
@@ -65,7 +65,7 @@
         <legend class="w-auto px-2">Coverage Details</legend>
 
         <div class="mb-3">
-            <label asp-for="CoverageType" class="form-label"></label>
+            <label asp-for="CoverageType" class="form-label"></label><span class="text-danger"> *</span>
             <select asp-for="CoverageType" class="form-control" asp-items="@ViewBag.CoverageTypes">
                 <option value="">-- Select Coverage Type --</option>
             </select>
@@ -73,13 +73,13 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="CoverageAmount" class="form-label"></label>
+            <label asp-for="CoverageAmount" class="form-label"></label><span class="text-danger"> *</span>
             <input asp-for="CoverageAmount" class="form-control" />
             <span asp-validation-for="CoverageAmount" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="PremiumAmount" class="form-label"></label>
+            <label asp-for="PremiumAmount" class="form-label"></label><span class="text-danger"> *</span>
             <input asp-for="PremiumAmount" class="form-control" />
             <span asp-validation-for="PremiumAmount" class="text-danger"></span>
         </div>
@@ -104,7 +104,7 @@
 
     <!-- Status -->
     <div class="mb-4">
-        <label asp-for="Status" class="form-label"></label>
+        <label asp-for="Status" class="form-label"></label><span class="text-danger"> *</span>
         <select asp-for="Status" class="form-control">
             <option value="">-- Select Status --</option>
             <option value="ACTIVE" selected>Active</option>

@@ -10,47 +10,47 @@
 
     @Html.AntiForgeryToken()
 <div class="form-group">
-<label asp-for="VehicleMake"></label>
+<label asp-for="VehicleMake"></label><span class="text-danger"> *</span>
 <select asp-for="VehicleMake" asp-items="ViewBag.VehicleMakes" class="form-control"></select>
 <span asp-validation-for="VehicleMake" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="VehicleModel"></label>
+<label asp-for="VehicleModel"></label><span class="text-danger"> *</span>
 <input asp-for="VehicleModel" class="form-control" />
 <span asp-validation-for="VehicleModel" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="VehicleYear"></label>
+<label asp-for="VehicleYear"></label><span class="text-danger"> *</span>
 <select asp-for="VehicleYear" asp-items="ViewBag.VehicleYears" class="form-control"></select>
 <span asp-validation-for="VehicleYear" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="LicensePlate"></label>
+<label asp-for="LicensePlate"></label><span class="text-danger"> *</span>
 <input asp-for="LicensePlate" class="form-control" />
 <span asp-validation-for="LicensePlate" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="CoverageType"></label>
+<label asp-for="CoverageType"></label><span class="text-danger"> *</span>
 <select asp-for="CoverageType" asp-items="ViewBag.CoverageTypes" class="form-control"></select>
 <span asp-validation-for="CoverageType" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="CoverageAmount"></label>
+<label asp-for="CoverageAmount"></label><span class="text-danger"> *</span>
 <input asp-for="CoverageAmount" class="form-control" />
 <span asp-validation-for="CoverageAmount" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="PremiumAmount"></label>
+<label asp-for="PremiumAmount"></label><span class="text-danger"> *</span>
 <input asp-for="PremiumAmount" class="form-control" />
 <span asp-validation-for="PremiumAmount" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="StartDate"></label>
+<label asp-for="StartDate"></label><span class="text-danger"> *</span>
 <input asp-for="StartDate" class="form-control" type="date" />
 <span asp-validation-for="StartDate" class="text-danger"></span>
 </div>
 <div class="form-group">
-<label asp-for="EndDate"></label>
+<label asp-for="EndDate"></label><span class="text-danger"> *</span>
 <input asp-for="EndDate" class="form-control" type="date" />
 <span asp-validation-for="EndDate" class="text-danger"></span>
 </div>
