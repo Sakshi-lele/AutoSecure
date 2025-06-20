@@ -16,10 +16,26 @@ html {
   position: relative;
   min-height: 100%;
 }
-
-body {
-  margin-bottom: 60px;
+.navbar-brand::before {
+  content: "🚗";
+  margin-right: 0.5rem;
+  font-size: 2rem;
+  animation: bounce 2s infinite;
 }
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+  }
+
+  40% {
+      transform: translateY(-10px);
+  }
+
+  60% {
+      transform: translateY(-5px);
+  }
+}
+
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
@@ -28,4 +44,17 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+.footer {
+  margin-top: auto !important; 
+  background-color: #212529;
+  color: #ffffff;
+  width: 100%;
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid #444;
+}
+.footer p {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
 }

@@ -116,7 +116,7 @@ namespace Auto_Insurance_Management_System.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = $"{nameof(UserRole.CUSTOMER)},{nameof(UserRole.AGENT)}")]
+        [Authorize(Roles = $"{nameof(UserRole.CUSTOMER)},{nameof(UserRole.AGENT)},{nameof(UserRole.ADMIN)}")]
         public async Task<IActionResult> Edit(int id)
         {
             var policyDetails = await _policyService.GetPolicyByIdAsync(id);
@@ -179,7 +179,7 @@ namespace Auto_Insurance_Management_System.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = $"{nameof(UserRole.CUSTOMER)},{nameof(UserRole.AGENT)}")]
+        [Authorize(Roles = $"{nameof(UserRole.CUSTOMER)},{nameof(UserRole.AGENT)},{nameof(UserRole.ADMIN)}")]
         public async Task<IActionResult> Edit(int id, CreatePolicyViewModel model)
         {
             await PopulateCustomersForViewBag(model.UserId);
@@ -205,7 +205,7 @@ namespace Auto_Insurance_Management_System.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = nameof(UserRole.AGENT))]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> Delete(int id)
         {
             var policy = await _policyService.GetPolicyByIdAsync(id);
@@ -216,7 +216,7 @@ namespace Auto_Insurance_Management_System.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = nameof(UserRole.AGENT))]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> DeleteConfirmed(int PolicyId, string deleteReason, string otherReason = null)
         {
             if (string.IsNullOrWhiteSpace(deleteReason))
@@ -243,7 +243,7 @@ namespace Auto_Insurance_Management_System.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = nameof(UserRole.AGENT))]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> DeletedPolicies()
         {
             var deletedPolicies = await _policyService.GetDeletedPoliciesAsync();
@@ -251,7 +251,7 @@ namespace Auto_Insurance_Management_System.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = nameof(UserRole.AGENT))]
+        [Authorize(Roles = $"{nameof(UserRole.ADMIN)},{nameof(UserRole.AGENT)}")]
         public async Task<IActionResult> Restore(int id)
         {
             var result = await _policyService.RestorePolicyAsync(id);

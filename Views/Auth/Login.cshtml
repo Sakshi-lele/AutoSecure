@@ -4,51 +4,139 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card mt-5">
-                <div class="card-header">
-                    <h3 class="text-center">Auto Insurance Management System</h3>
-                    <h5 class="text-center text-muted">Login</h5>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Login" method="post">
-                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+<style>
+    body {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email Address</label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 80px); /* Adjust if layout has a header/footer */
+        padding: 2rem 1rem;
+    }
 
-                        <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" class="form-control" placeholder="Enter your password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
+    .login-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 500px;
+        color: #fff;
+    }
 
-                        <div class="mb-3 form-check">
-                            <input asp-for="RememberMe" class="form-check-input" />
-                            <label asp-for="RememberMe" class="form-check-label">Remember me</label>
-                        </div>
+    .login-header h3 {
+        font-weight: 800;
+        font-size: 1.8rem;
+        text-align: center;
+        background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </div>
-                    </form>
+    .login-header h5 {
+        font-size: 1.1rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 1.5rem;
+    }
 
-                    <div class="text-center mt-3">
-                        <p>Don't have an account? <a asp-action="Register">Register here</a></p>
-                    </div>
-                </div>
+    .form-label {
+        color: #fff;
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-check-label {
+        color: #fff;
+    }
+
+    .form-check-input {
+        background-color: transparent;
+        border: 1px solid #ccc;
+    }
+
+    .form-check-input:checked {
+        background-color: #38f9d7;
+        border-color: #38f9d7;
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, #43e97b, #38f9d7);
+        border: none;
+        font-weight: 600;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        transform: scale(1.03);
+        background: linear-gradient(to right, #3ecf8e, #2bdac7);
+    }
+
+    .text-danger {
+        font-size: 0.9rem;
+    }
+
+    .text-center a {
+        color: #c0e4ff;
+    }
+
+    .text-center a:hover {
+        color: #90cdf4;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-container">
+        <div class="login-header">
+            <h3>Vehi$ure</h3>
+            <h5>Login</h5>
+        </div>
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" class="form-control" placeholder="Enter your password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Remember me</label>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Don't have an account? <a asp-action="Register">Register here</a></p>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

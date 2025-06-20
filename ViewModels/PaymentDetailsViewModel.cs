@@ -11,6 +11,7 @@ namespace Auto_Insurance_Management_System.ViewModels
         [Required]
         [Display(Name = "Policy ID")]
         public int PolicyId { get; set; }
+        public DateTime DueDate { get; set; }
         
         [Required]
         [Display(Name = "Amount")]

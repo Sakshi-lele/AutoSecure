@@ -24,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Background */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -37,7 +36,6 @@
             animation: gradientShift 15s ease infinite;
         }
 
-        /* Keyframes properly defined */
         @@keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
@@ -52,7 +50,6 @@
             }
         }
 
-        /* Floating particles */
         .particle {
             position: absolute;
             width: 4px;
@@ -425,13 +422,17 @@
                 margin: 0 auto;
             }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+           .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    justify-items: center;
+}
+.feature-card:nth-child(4) {
+    grid-column: 2 / 3;
+}
 
         .feature-card {
             background: rgba(255, 255, 255, 0.1);
@@ -698,7 +699,7 @@
     <!-- Header -->
     <header>
         <nav>
-            <div class="logo">Auto Insurance Management System</div>
+            <div class="logo">Vehi$ure</div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
@@ -718,8 +719,7 @@
             <h1>Revolutionize Your Auto Insurance Management</h1>
             <p>Streamline policies, manage claims, and protect your customers with our comprehensive insurance management platform designed for the modern era.</p>
             <div class="hero-buttons">
-                <a href="/Home/Dashboard" class="btn btn-hero-primary btn-large">Manage My Policies</a>
-                <a href="#features" class="btn btn-hero-secondary btn-large">Watch Demo</a>
+                <a href="/Auth/Register" class="btn btn-hero-primary btn-large">Manage My Policies</a>
             </div>
         </div>
         <div class="scroll-indicator"></div>
@@ -762,10 +762,9 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2>Welcome to Auto Insurance Management System</h2>
-                    <p>At Auto Insurance Management System, we are the leading platform designed to seamlessly connect and empower every stakeholder in the auto insurance ecosystem. We understand the unique demands of modern insurance operations, from comprehensive policy administration for our *admins*, efficient claim processing for our agents, to unparalleled transparency and service for our customers.</p>
+                    <h2>Welcome to Vehi$ure</h2>
+                    <p>At Vehi$ure, we are the leading platform designed to seamlessly connect and empower every stakeholder in the auto insurance ecosystem. We understand the unique demands of modern insurance operations, from comprehensive policy administration for our *admins*, efficient claim processing for our agents, to unparalleled transparency and service for our customers.</p>
                     <p>Our commitment is to deliver a cutting-edge solution that streamlines workflows, enhances decision-making, and fosters stronger relationships. With intuitive interfaces and robust functionalities, we ensure that managing auto insurance is simpler, faster, and more secure for everyone involved. We are dedicated to continuous innovation, ensuring our platform evolves with your needs.</p>
-                    <a href="/Home/About" class="btn btn-primary btn-large">Our Vision</a>
                 </div>
                 <div class="about-image">🏢</div>
             </div>
@@ -778,8 +777,7 @@
             <h2>Ready to Elevate Your Insurance Experience?</h2>
             <p>Whether you're an admin optimizing operations, an agent streamlining client services, or a customer seeking seamless policy management, Auto Insurance Management System is here to empower you. Join our growing community today!</p>
             <div class="hero-buttons">
-                <a href="/Account/Register" class="btn btn-hero-primary btn-large">Manage My Policies</a>
-                <a href="/Home/Contact" class="btn btn-hero-secondary btn-large">Schedule Demo</a>
+                <a href="/Auth/Register" class="btn btn-hero-primary btn-large">Manage My Policies</a>
             </div>
         </div>
     </section>

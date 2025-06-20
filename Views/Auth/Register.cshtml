@@ -4,86 +4,161 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card mt-5">
-                <div class="card-header">
-                    <h3 class="text-center">Create New Account</h3>
-                    <h6 class="text-center text-muted">Auto Insurance Management System</h6>
+<style>
+    body {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .register-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+    }
+
+    .register-container {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem 2rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 800px;
+        color: white;
+    }
+
+    .register-header h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .register-header h6 {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 2rem;
+    }
+
+    .form-label {
+        color: white;
+        font-weight: 500;
+    }
+
+    .form-control, .form-select {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        color: white;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.5);
+        border-color: #667eea;
+    }
+
+    .btn-success {
+        background: linear-gradient(to right, #43e97b, #38f9d7);
+        border: none;
+        font-weight: bold;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(to right, #3ecf8e, #2bdac7);
+        transform: scale(1.02);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .text-danger {
+        font-size: 0.9rem;
+    }
+
+    a {
+        color: #90cdf4;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #63b3ed;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-container">
+        <div class="register-header">
+            <h3>Create New Account</h3>
+            <h6>Vehi$ure</h6>
+        </div>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FirstName" class="form-label">First Name *</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <div class="card-body">
-                    <form asp-action="Register" method="post">
-                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="FirstName" class="form-label">First Name *</label>
-                                    <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="LastName" class="form-label">Last Name *</label>
-                                    <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email Address *</label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter email address" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="Password" class="form-label">Password *</label>
-                                    <input asp-for="Password" class="form-control" placeholder="Enter password" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                    <small class="form-text text-muted">Minimum 6 characters with uppercase, lowercase, and digit</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label asp-for="ConfirmPassword" class="form-label">Confirm Password *</label>
-                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm password" />
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Role" class="form-label">Role *</label>
-                            <select asp-for="Role" class="form-select">
-                                <option value="">Select Role</option>
-                                <option value="CUSTOMER">Customer</option>
-                                <option value="AGENT">Agent</option>
-                                <option value="ADMIN">Admin</option>
-                            </select>
-                            <span asp-validation-for="Role" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success">Create Account</button>
-                        </div>
-                    </form>
-
-                    <div class="text-center mt-3">
-                        <p>Already have an account? <a asp-action="Login">Login here</a></p>
-                    </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName" class="form-label">Last Name *</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email Address *</label>
+                <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Password" class="form-label">Password *</label>
+                    <input asp-for="Password" class="form-control" placeholder="Enter password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <small class="form-text text-light">Minimum 6 characters with uppercase, lowercase, and digit</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label">Confirm Password *</label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Role" class="form-label">Role *</label>
+                <select asp-for="Role" class="form-select">
+                    <option value="">Select Role</option>
+                    <option value="CUSTOMER">Customer</option>
+                    <option value="AGENT">Agent</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success">Create Account</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <p>Already have an account? <a asp-action="Login">Login here</a></p>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

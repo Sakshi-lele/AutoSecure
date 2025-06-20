@@ -1,6 +1,7 @@
 ﻿@model Auto_Insurance_Management_System.ViewModels.PolicyDetailsViewModel
 @{
     ViewData["Title"] = "Policy Details";
+    var isAdminOrAgent = User.IsInRole("ADMIN") || User.IsInRole("AGENT");
 }
 
 <div class="container mt-4">
@@ -54,7 +55,9 @@
             </dl>
         </div>
         <div class="card-footer text-end">
+          @if (isAdminOrAgent){
             <a asp-action="Edit" asp-route-id="@Model.PolicyId" class="btn btn-outline-primary me-2">Edit</a>
+          }
             <a asp-action="Index" class="btn btn-secondary">Back to List</a>
         </div>
     </div>

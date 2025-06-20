@@ -4,111 +4,124 @@
     ViewData["Title"] = "Create Policy";
 }
 
-<h1>Create Policy</h1>
+<h1 class="mb-4">Create Policy</h1>
 
-<h4>New Policy Details</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="@(new SelectList(ViewBag.Customers, "Value", "Text"))">
-                    <option value="">-- Select Customer --</option>
-                </select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
+    <!-- Customer Info -->
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Customer Information</legend>
+        <div class="mb-3">
+            <label asp-for="UserId" class="form-label"></label>
+            <select asp-for="UserId" class="form-control" asp-items="@(new SelectList(ViewBag.Customers, "Value", "Text"))">
+                <option value="">-- Select Customer --</option>
+            </select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="PolicyNumber" class="control-label"></label>
-                <input asp-for="PolicyNumber" class="form-control" />
-                <span asp-validation-for="PolicyNumber" class="text-danger"></span>
-            </div>
+        <div class="mb-3">
+            <label asp-for="PolicyNumber" class="form-label"></label>
+            <input asp-for="PolicyNumber" class="form-control" />
+            <span asp-validation-for="PolicyNumber" class="text-danger"></span>
+        </div>
+    </fieldset>
 
-            <h5>Vehicle Information</h5>
-            <div class="form-group">
-                <label asp-for="VehicleMake" class="control-label"></label>
-                <select asp-for="VehicleMake" class="form-control" asp-items="@ViewBag.VehicleMakes">
-                    <option value="">-- Select Make --</option>
-                </select>
-                <span asp-validation-for="VehicleMake" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VehicleModel" class="control-label"></label>
-                <input asp-for="VehicleModel" class="form-control" />
-                <span asp-validation-for="VehicleModel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VehicleYear" class="control-label"></label>
-                <select asp-for="VehicleYear" class="form-control" asp-items="@ViewBag.VehicleYears">
-                    <option value="">-- Select Year --</option>
-                </select>
-                <span asp-validation-for="VehicleYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LicensePlate" class="control-label"></label>
-                <input asp-for="LicensePlate" class="form-control" />
-                <span asp-validation-for="LicensePlate" class="text-danger"></span>
-            </div>
+    <!-- Vehicle Info -->
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Vehicle Information</legend>
 
-            <h5>Coverage Details</h5>
-            <div class="form-group">
-                <label asp-for="CoverageType" class="control-label"></label>
-                <select asp-for="CoverageType" class="form-control" asp-items="@ViewBag.CoverageTypes">
-                    <option value="">-- Select Coverage Type --</option>
-                </select>
-                <span asp-validation-for="CoverageType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoverageAmount" class="control-label"></label>
-                <input asp-for="CoverageAmount" class="form-control" />
-                <span asp-validation-for="CoverageAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PremiumAmount" class="control-label"></label>
-                <input asp-for="PremiumAmount" class="form-control" />
-                <span asp-validation-for="PremiumAmount" class="text-danger"></span>
-            </div>
+        <div class="mb-3">
+            <label asp-for="VehicleMake" class="form-label"></label>
+            <select asp-for="VehicleMake" class="form-control" asp-items="@ViewBag.VehicleMakes">
+                <option value="">-- Select Make --</option>
+            </select>
+            <span asp-validation-for="VehicleMake" class="text-danger"></span>
+        </div>
 
-            <h5>Policy Dates</h5>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" type="date" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" type="date" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
+        <div class="mb-3">
+            <label asp-for="VehicleModel" class="form-label"></label>
+            <input asp-for="VehicleModel" class="form-control" />
+            <span asp-validation-for="VehicleModel" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="">-- Select Status --</option>
-                    <option value="ACTIVE">Active</option>
-                    <option value="EXPIRED">Expired</option>
-                    <option value="CANCELLED">Cancelled</option>
-                    <option value="PENDING">Pending</option>
-                </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+        <div class="mb-3">
+            <label asp-for="VehicleYear" class="form-label"></label>
+            <select asp-for="VehicleYear" class="form-control" asp-items="@ViewBag.VehicleYears">
+                <option value="">-- Select Year --</option>
+            </select>
+            <span asp-validation-for="VehicleYear" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="mb-3">
+            <label asp-for="LicensePlate" class="form-label"></label>
+            <input asp-for="LicensePlate" class="form-control" />
+            <span asp-validation-for="LicensePlate" class="text-danger"></span>
+        </div>
+    </fieldset>
+
+    <!-- Coverage Info -->
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Coverage Details</legend>
+
+        <div class="mb-3">
+            <label asp-for="CoverageType" class="form-label"></label>
+            <select asp-for="CoverageType" class="form-control" asp-items="@ViewBag.CoverageTypes">
+                <option value="">-- Select Coverage Type --</option>
+            </select>
+            <span asp-validation-for="CoverageType" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CoverageAmount" class="form-label"></label>
+            <input asp-for="CoverageAmount" class="form-control" />
+            <span asp-validation-for="CoverageAmount" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PremiumAmount" class="form-label"></label>
+            <input asp-for="PremiumAmount" class="form-control" />
+            <span asp-validation-for="PremiumAmount" class="text-danger"></span>
+        </div>
+    </fieldset>
+
+    <!-- Policy Dates -->
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2">Policy Dates</legend>
+
+        <div class="mb-3">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EndDate" class="form-label"></label>
+            <input asp-for="EndDate" type="date" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+    </fieldset>
+
+    <!-- Status -->
+    <div class="mb-4">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-control">
+            <option value="">-- Select Status --</option>
+            <option value="ACTIVE" selected>Active</option>
+            <option value="EXPIRED">Expired</option>
+            <option value="CANCELLED">Cancelled</option>
+            <option value="PENDING">Pending</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- Submit -->
+    <div class="mb-3">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </div>
+</form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

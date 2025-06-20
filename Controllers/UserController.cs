@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Auto_Insurance_Management_System.Data; // Add this namespace
+using Microsoft.EntityFrameworkCore; // Add this namespace
+using Auto_Insurance_Management_System.ViewModels; 
 using Auto_Insurance_Management_System.Models;
 using Auto_Insurance_Management_System.Services;
 using System.Threading.Tasks;
@@ -10,10 +13,13 @@ namespace Auto_Insurance_Management_System.Controllers
     public class UserController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly ApplicationDbContext _context; // Add this field
 
-        public UserController(IAuthService authService)
+        // Update constructor to inject ApplicationDbContext
+        public UserController(IAuthService authService, ApplicationDbContext context)
         {
             _authService = authService;
+            _context = context; // Initialize context
         }
 
         // GET: User
@@ -86,6 +92,60 @@ namespace Auto_Insurance_Management_System.Controllers
                 TempData["Error"] = "Failed to deactivate user.";
 
             return RedirectToAction(nameof(Index));
+        }
+
+         public async Task<IActionResult> Details(string id)
+        {
+            var user = await _authService.GetUserProfileAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var duePayments = await GetDuePaymentsForUser(id);
+
+            var viewModel = new UserDetailsViewModel
+            {
+                User = user,
+                DuePayments = duePayments
+            };
+
+            return View(viewModel);
+        }
+
+        private async Task<List<PaymentDetailsViewModel>> GetDuePaymentsForUser(string userId)
+        {
+            // Get active policies for the user
+            var policies = await _context.Policies
+                .Where(p => p.UserId == userId && p.PolicyStatus == "ACTIVE")
+                .ToListAsync();
+
+            var duePayments = new List<PaymentDetailsViewModel>();
+            
+            foreach (var policy in policies)
+            {
+                // Check if payment is due
+                var lastPayment = await _context.Payments
+                    .Where(p => p.PolicyId == policy.Id && p.Status == PaymentStatus.Completed)
+                    .OrderByDescending(p => p.PaymentDate)
+                    .FirstOrDefaultAsync();
+                
+                // If no payment in the last 30 days, it's due
+                if (lastPayment == null || lastPayment.PaymentDate < DateTime.UtcNow.AddDays(-30))
+                {
+                    duePayments.Add(new PaymentDetailsViewModel
+                    {
+                        PolicyId = policy.Id,
+                        PolicyNumber = policy.PolicyNumber,
+                        PaymentAmount = policy.PremiumAmount,
+                        DueDate = lastPayment == null ? 
+                                  policy.StartDate.AddDays(30) : 
+                                  lastPayment.PaymentDate.AddDays(30)
+                    });
+                }
+            }
+            
+            return duePayments;
         }
     }
 }

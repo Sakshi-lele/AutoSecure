@@ -23,9 +23,12 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Support Tickets</h2>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i> Create New Ticket
-        </a>
+       @if (User.IsInRole("CUSTOMER"))
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i> Create New Ticket
+            </a>
+        }
     </div>
 
     <form asp-action="Index" method="get" class="row g-2 mb-4">
