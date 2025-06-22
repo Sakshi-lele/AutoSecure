@@ -1,48 +1,50 @@
 ﻿@model List<Auto_Insurance_Management_System.ViewModels.PolicyDetailsViewModel>
 
 @{
-
     ViewData["Title"] = "Policy Requests";
-
 }
-<h2>Pending Policy Requests</h2>
-<table class="table table-bordered">
-<thead>
-<tr>
-<th>Policy Number</th>
-<th>Customer</th>
-<th>Vehicle</th>
-<th>Coverage</th>
-<th>Premium</th>
-<th>Dates</th>
-<th>Status</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody>
 
-    @foreach (var req in Model)
+<h2 class="mb-4 text-primary">Pending Policy Requests</h2>
 
-    {
-<tr>
-<td>@req.PolicyNumber</td>
-<td>@req.UserName</td>
-<td>@req.VehicleDetails</td>
-<td>@req.CoverageType ($@req.CoverageAmount)</td>
-<td>$@req.PremiumAmount</td>
-<td>@req.StartDate.ToShortDateString() - @req.EndDate.ToShortDateString()</td>
-<td><span class="badge bg-warning text-dark">@req.PolicyStatus</span></td>
-<td>
-<form asp-action="Accept" asp-route-id="@req.PolicyId" method="post" style="display:inline">
-<button type="submit" class="btn btn-success btn-sm">Accept</button>
-</form>
-<form asp-action="Decline" asp-route-id="@req.PolicyId" method="post" style="display:inline">
-<button type="submit" class="btn btn-danger btn-sm">Decline</button>
-</form>
-</td>
-</tr>
-
-    }
-</tbody>
-</table>
- 
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Policy Number</th>
+                <th>Customer</th>
+                <th>Vehicle</th>
+                <th>Coverage</th>
+                <th>Premium</th>
+                <th>Dates</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var req in Model)
+            {
+                <tr>
+                    <td>@req.PolicyNumber</td>
+                    <td>@req.UserName</td>
+                    <td class="text-truncate" style="max-width: 200px;">@req.VehicleDetails</td>
+                    <td>@req.CoverageType (₹@req.CoverageAmount)</td>
+                    <td>₹@req.PremiumAmount</td>
+                    <td>@req.StartDate.ToShortDateString() - @req.EndDate.ToShortDateString()</td>
+                    <td>
+                        <span class="badge bg-warning text-dark">@req.PolicyStatus</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                            <form asp-action="Accept" asp-route-id="@req.PolicyId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-success btn-sm px-3">Accept</button>
+                            </form>
+                            <form asp-action="Decline" asp-route-id="@req.PolicyId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm px-3">Decline</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

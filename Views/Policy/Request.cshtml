@@ -1,65 +1,77 @@
 ﻿@model Auto_Insurance_Management_System.ViewModels.CreatePolicyViewModel
 
 @{
-
     ViewData["Title"] = "Request Policy";
-
 }
-<h2>Request a New Policy</h2>
-<form asp-action="Request" method="post">
 
-    @Html.AntiForgeryToken()
-<div class="form-group">
-<label asp-for="VehicleMake"></label><span class="text-danger"> *</span>
-<select asp-for="VehicleMake" asp-items="ViewBag.VehicleMakes" class="form-control"></select>
-<span asp-validation-for="VehicleMake" class="text-danger"></span>
+<h2 class="mb-4 text-primary">Request a New Policy</h2>
+
+<div class="card shadow-sm p-4">
+    <form asp-action="Request" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="VehicleMake" class="form-label fw-bold">Vehicle Make <span class="text-danger">*</span></label>
+                <select asp-for="VehicleMake" asp-items="ViewBag.VehicleMakes" class="form-control"></select>
+                <span asp-validation-for="VehicleMake" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="VehicleModel" class="form-label fw-bold">Vehicle Model <span class="text-danger">*</span></label>
+                <input asp-for="VehicleModel" class="form-control" />
+                <span asp-validation-for="VehicleModel" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="VehicleYear" class="form-label fw-bold">Vehicle Year <span class="text-danger">*</span></label>
+                <select asp-for="VehicleYear" asp-items="ViewBag.VehicleYears" class="form-control"></select>
+                <span asp-validation-for="VehicleYear" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="LicensePlate" class="form-label fw-bold">License Plate <span class="text-danger">*</span></label>
+                <input asp-for="LicensePlate" class="form-control" />
+                <span asp-validation-for="LicensePlate" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="CoverageType" class="form-label fw-bold">Coverage Type <span class="text-danger">*</span></label>
+                <select asp-for="CoverageType" asp-items="ViewBag.CoverageTypes" class="form-control"></select>
+                <span asp-validation-for="CoverageType" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="CoverageAmount" class="form-label fw-bold">Coverage Amount <span class="text-danger">*</span></label>
+                <input asp-for="CoverageAmount" class="form-control" />
+                <span asp-validation-for="CoverageAmount" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="PremiumAmount" class="form-label fw-bold">Premium Amount <span class="text-danger">*</span></label>
+                <input asp-for="PremiumAmount" class="form-control" />
+                <span asp-validation-for="PremiumAmount" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="StartDate" class="form-label fw-bold">Policy Start Date <span class="text-danger">*</span></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="EndDate" class="form-label fw-bold">Policy End Date <span class="text-danger">*</span></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary px-4">Submit Request</button>
+        </div>
+    </form>
 </div>
-<div class="form-group">
-<label asp-for="VehicleModel"></label><span class="text-danger"> *</span>
-<input asp-for="VehicleModel" class="form-control" />
-<span asp-validation-for="VehicleModel" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="VehicleYear"></label><span class="text-danger"> *</span>
-<select asp-for="VehicleYear" asp-items="ViewBag.VehicleYears" class="form-control"></select>
-<span asp-validation-for="VehicleYear" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="LicensePlate"></label><span class="text-danger"> *</span>
-<input asp-for="LicensePlate" class="form-control" />
-<span asp-validation-for="LicensePlate" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="CoverageType"></label><span class="text-danger"> *</span>
-<select asp-for="CoverageType" asp-items="ViewBag.CoverageTypes" class="form-control"></select>
-<span asp-validation-for="CoverageType" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="CoverageAmount"></label><span class="text-danger"> *</span>
-<input asp-for="CoverageAmount" class="form-control" />
-<span asp-validation-for="CoverageAmount" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="PremiumAmount"></label><span class="text-danger"> *</span>
-<input asp-for="PremiumAmount" class="form-control" />
-<span asp-validation-for="PremiumAmount" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="StartDate"></label><span class="text-danger"> *</span>
-<input asp-for="StartDate" class="form-control" type="date" />
-<span asp-validation-for="StartDate" class="text-danger"></span>
-</div>
-<div class="form-group">
-<label asp-for="EndDate"></label><span class="text-danger"> *</span>
-<input asp-for="EndDate" class="form-control" type="date" />
-<span asp-validation-for="EndDate" class="text-danger"></span>
-</div>
-<button type="submit" class="btn btn-primary">Submit Request</button>
-</form>
 
 @section Scripts {
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
 }
- 
